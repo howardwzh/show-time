@@ -1,16 +1,18 @@
 <template>
   <div id="HTML5">
-    HTML5
+    <Wrapper title="Notification">
+      <Notification />
+    </Wrapper>
   </div>
 </template>
 
 <script>
-import HelloWorld from '../../components/HelloWorld.vue'
+import Notification from './Notification'
 
 export default {
   name: 'HTML5',
   components: {
-    HelloWorld
+    Notification
   }
 }
 </script>
