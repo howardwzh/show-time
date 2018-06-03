@@ -16,7 +16,7 @@ export default {
 
 <style scoped>
 h5.title {
-  margin: 40px 0 0;
+  margin: 20px 0; 
   font-size: 20px;
 }
 </style>

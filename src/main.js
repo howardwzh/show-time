@@ -1,7 +1,8 @@
 import Vue from 'vue/dist/vue.js'
 import VueRouter from 'vue-router'
-// import VueMarkdown from 'vue-markdown'
+import VueMarkdown from 'vue-markdown'
 import Wrapper from './components/Wrapper'
+import Group from './components/Group'
 import App from './App.vue'
 import NotFound from './NotFound.vue'
 import HTML5 from './pages/html5/Index.vue'
@@ -10,8 +11,9 @@ import CSS3 from './pages/css3/Index.vue'
 Vue.config.productionTip = false
 
 Vue.use(VueRouter) 
-// Vue.use(VueMarkdown)
+Vue.component('VueMarkdown', VueMarkdown)
 Vue.component('Wrapper', Wrapper)
+Vue.component('Group', Group)
 
 const router = new VueRouter({
   routes: [
