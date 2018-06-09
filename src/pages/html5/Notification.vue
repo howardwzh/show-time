@@ -1,7 +1,8 @@
 <template>
   <div id="Notification">
     <Group title="用户权限">
-      <VueMarkdown>
+      <WzhMarkdown>
+        <textarea>
 Notification.permission 该属性用于表明当前通知显示的授权状态，可能的值包括：
 
 - default ：不知道用户的选择，默认。
@@ -18,16 +19,19 @@ if(Notification.permission === 'granted'){
   console.log('用户还没选择，去向用户申请权限吧');
 }
 ```
-      </VueMarkdown>
-      试一试：<button @click="check">检查权限</button>
+        </textarea>
+      </WzhMarkdown>
+      <p>试一试：<button @click="check">检查权限</button></p>
+      <p class="result-tip">{{checkResult}}</p>
     </Group>
     <Group title="请求权限">
-      <VueMarkdown>
+      <WzhMarkdown>
+        <textarea>
 Notification 对象提供了 requestPermission() 方法请求用户当前来源的权限以显示通知，基于 promise 的语法
 
 ##### 代码如下:
 ```js
-Notification.requestPermission().then(function(permission) {
+Notification.requestPermission().then((permission) => {
   if(permission === 'granted'){
     console.log('用户允许通知');
   }else if(permission === 'denied'){
@@ -35,11 +39,14 @@ Notification.requestPermission().then(function(permission) {
   }
 });
 ```
-      </VueMarkdown>
-      试一试：<button @click="request">请求权限</button>
+        </textarea>
+      </WzhMarkdown>
+      <p>试一试：<button @click="request">请求权限</button></p>
+      <p class="result-tip">{{requestResult}}</p>
     </Group>
     <Group title="发送通知">
-      <VueMarkdown>
+      <WzhMarkdown>
+        <textarea>
 获取用户授权之后，就可以推送通知了。`const notification = new Notification(title, options)`
 
 - title：通知的标题
@@ -60,11 +67,13 @@ const n = new Notification('新的消息通知',{
     requireInteraction: true
 })
 ```
-      </VueMarkdown>
-      试一试：<button @click="send">发送通知</button>
+        </textarea>
+      </WzhMarkdown>
+      <p>试一试：<button @click="send">发送通知</button></p>
     </Group>
     <Group title="关闭通知">
-      <VueMarkdown>
+      <WzhMarkdown>
+        <textarea>
 new实例化之后的对象，可以调用 close() 方法来关闭通知
 
 ##### 代码如下：
@@ -74,11 +83,13 @@ setTimeout(function() {
     n.close();
 }, 3000);
 ```
-      </VueMarkdown>
-      试一试：<button @click="sendAndShut">发送通知3秒后自动关闭</button>
+        </textarea>
+      </WzhMarkdown>
+      <p>试一试：<button @click="sendAndShut">发送通知3秒后自动关闭</button></p>
     </Group>
     <Group title="添加事件">
-      <VueMarkdown>
+      <WzhMarkdown>
+        <textarea>
 new实例化之后的对象，可以绑定 onclick 事件
 
 ##### 代码如下：
@@ -95,8 +106,9 @@ n.onclick = function(){
     n.close();                              // 并且关闭通知
 }
 ```
-      </VueMarkdown>
-      试一试：<button @click="sendAndAddEvent">发送通知点击弹框触发事件</button>
+        </textarea>
+      </WzhMarkdown>
+      <p>试一试：<button @click="sendAndAddEvent">发送通知点击弹框触发事件</button></p>
     </Group>
   </div>
 </template>
@@ -106,36 +118,42 @@ const icon = require('../../assets/logo.png')
 
 export default {
   name: 'Notification',
+  data () {
+    return {
+      checkResult: '',
+      requestResult: ''
+    }
+  },
   components: {
   },
   methods: {
     check () {
       if(Notification.permission === 'granted'){
-          console.log('用户允许通知')
+          this.checkResult = '用户允许通知'
       }else if(Notification.permission === 'denied'){
-          console.log('用户拒绝通知')
+          this.checkResult = '用户拒绝通知'
       }else{
-          console.log('用户还没选择，去向用户申请权限吧')
+          this.checkResult = '用户还没选择，去向用户申请权限吧'
       }
     },
     request () {
-      Notification.requestPermission().then(function(permission) {
+      Notification.requestPermission().then((permission) => {
         if(permission === 'granted'){
-            console.log('用户允许通知')
+            this.requestResult = '用户允许通知'
         }else if(permission === 'denied'){
-            console.log('用户拒绝通知')
+            this.requestResult = '用户拒绝通知，请手动点击浏览器链接输入框左侧“i”图标 ，︎将“通知”选为“询问”后再点击上方按钮。'
         }
       })
     },
     send () {
-      new Notification('状态更新提醒',{
-        body: '你的朋友圈有3条新状态，快去查看吧',
+      new Notification('新的消息通知',{
+        body: '你的宝贝已经在老司机护送下出发了。',
         icon,
       })
     },
     sendAndShut () {
-      const n = new Notification('状态更新提醒',{
-        body: '你的朋友圈有3条新状态，快去查看吧',
+      const n = new Notification('新的消息通知',{
+        body: '你的宝贝已经在老司机护送下出发了。',
         icon,
       })
       setTimeout(function() {
@@ -143,11 +161,11 @@ export default {
       }, 3000)
     },
     sendAndAddEvent () {
-      const n = new Notification('状态更新提醒',{
-          body: '你的朋友圈有3条新状态，快去查看吧',
+      const n = new Notification('新的消息通知',{
+          body: '你的宝贝已经在老司机护送下出发了。',
           icon,
           data: {
-            url: 'http://bing.com'
+            url: 'http://www.google.com'
           }
       })
       n.onclick = function(){
