@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     updateProp () {
-      this.$parent.count += 1
+      this.$emit('addCount')
     },
     updateData () {
       this.selfCount += 1

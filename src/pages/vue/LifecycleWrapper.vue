@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <Group>
     <button @click="toggle=false">销毁</button>
     <button @click="toggle=true">生成</button>
-    <Lifecycle v-bind:count="count" v-if="toggle" />
-  </div>
+    <Lifecycle v-bind:count="count" v-if="toggle" @addCount="addCount"/>
+  </Group>
 </template>
 
 <script>
@@ -19,6 +19,11 @@ export default {
   },
   components: {
     Lifecycle
+  },
+  methods: {
+    addCount () {
+      this.count += 1
+    }
   }
 }
 </script>
