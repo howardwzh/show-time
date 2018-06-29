@@ -1,27 +1,25 @@
 <template>
   <Group title="">
-    <AsyncComponentC />
+    <button @click="load">点击异步加载组件（效果查看Network）</button>
+    <AsyncComponentC v-if="isLoaded" />
   </Group>
 </template>
 
 <script>
-import Vue from 'vue/dist/vue.js'
-
-const AsyncComponentC = Vue.component('AsyncComponentC', function (resolve) {
-  // 这个特殊的 `require` 语法将会告诉 webpack
-  // 自动将你的构建代码切割成多个包，这些包
-  // 会通过 Ajax 请求加载
-  require(['./ComponentC'], resolve)
-})
-
 export default {
   name: 'AsyncComponent',
   data () {
     return {
+      isLoaded: false
     }
   },
   components: {
-    AsyncComponentC
+    AsyncComponentC: () => import('./ComponentC')
+  },
+  methods: {
+    load () {
+      this.isLoaded = true
+    }
   }
 }
 </script>
