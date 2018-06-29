@@ -6,18 +6,23 @@
     <Wrapper title="动态组件">
       <DynamicComponent />
     </Wrapper>
+    <Wrapper title="异步加载">
+      <AsyncComponent />
+    </Wrapper>
   </div>
 </template>
 
 <script>
 import LifecycleWrapper from './LifecycleWrapper'
 import DynamicComponent from './DynamicComponent'
+import AsyncComponent from './AsyncComponent'
 
 export default {
   name: 'VUE',
   components: {
     LifecycleWrapper,
-    DynamicComponent
+    DynamicComponent,
+    AsyncComponent
   }
 }
 </script>

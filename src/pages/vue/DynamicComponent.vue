@@ -1,5 +1,5 @@
 <template>
-  <Group title="切换会刷新">
+  <Group title="">
     <p><button @click="changeComponent('A')">Posts</button><button @click="changeComponent('B')">Archive</button></p>
     <h4>切换会刷新</h4>
     <component :is="component"></component>
