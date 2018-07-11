@@ -19,11 +19,16 @@ Vue.component('Group', Group)
 const router = new VueRouter({
   routes: [
     { path: '/', component: App },
-    { path: '/html5', component: HTML5 },
-    { path: '/css3', component: CSS3 },
-    { path: '/vue', component: VUE },
+    { path: '/html5', component: HTML5, meta: { title: 'html5展示' } },
+    { path: '/css3', component: CSS3, meta: { title: 'css3展示' } },
+    { path: '/vue', component: VUE, meta: { title: 'vue展示' } },
     { path: '*', component: NotFound }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title
+  next()
 })
 
 new Vue({
