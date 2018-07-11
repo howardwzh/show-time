@@ -1,16 +1,18 @@
 <template>
   <div id="CSS3">
-    CSS3
+    <Wrapper title="Transform">
+      <Transform />
+    </Wrapper>
   </div>
 </template>
 
 <script>
-import HelloWorld from '../../components/HelloWorld.vue'
+import Transform from './Transform'
 
 export default {
   name: 'CSS3',
   components: {
-    HelloWorld
+    Transform
   }
 }
 </script>

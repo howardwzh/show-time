@@ -29,8 +29,11 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .wzh-markdown {
   margin: 20px 0;
+  .v-note-wrapper {
+    min-height: 100px;
+  }
 }
 </style>
