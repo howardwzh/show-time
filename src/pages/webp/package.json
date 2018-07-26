@@ -1,0 +1,16 @@
+{
+  "name": "webp",
+  "version": "1.0.0",
+  "description": "install packages for images to webps",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "autowebps": "node build/images-to-webps.js"
+  },
+  "devDependencies": {
+    "child_process": "^1.0.2",
+    "chokidar": "^2.0.4",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7"
+  }
+}
