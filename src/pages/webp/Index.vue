@@ -47,14 +47,14 @@ export default {
 
 <style lang="less">
 .css-webp {
-  width: 200px;
+  width: 300px;
   height: 200px;
-  background-repeat: no-repeat;
-  background-size: cover;
-  .mixin('./images/happiness.png');
+  .mixinwebp('./images/happiness.png');
 }
-.mixin(@url) {
+.mixinwebp(@url) {
   background-image: url(@url);
+  background-repeat: no-repeat;
+  background-size: contain;
   .webps & {
     background-image: url('@{url}.webp');
   }
