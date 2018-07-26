@@ -24,19 +24,39 @@
         <img style="width: 200px;" src="./images/banana.gif" alt="" />
       </Group>
     </Wrapper>
+    <Wrapper title="webp in css">
+      <div class="css-webp"></div>
+    </Wrapper>
   </div>
 </template>
 
 <script>
 import ImageWebp from './components/ImageWebp'
+import { checkWebp } from './utils/webp-helper'
 
 export default {
   name: 'WEBP',
+  created () {
+    checkWebp()
+  },
   components: {
     ImageWebp
   }
 }
 </script>
 
-<style>
+<style lang="less">
+.css-webp {
+  width: 200px;
+  height: 200px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  .mixin('./images/happiness.png');
+}
+.mixin(@url) {
+  background-image: url(@url);
+  .webps & {
+    background-image: url('@{url}.webp');
+  }
+}
 </style>
