@@ -9,6 +9,7 @@ import HTML5 from './pages/html5/Index.vue'
 import CSS3 from './pages/css3/Index.vue'
 import VUE from './pages/vue/Index.vue'
 import WEBP from './pages/webp/Index.vue'
+import Chart from './pages/chart/Index.vue'
 
 Vue.config.productionTip = false
 
@@ -24,6 +25,7 @@ const router = new VueRouter({
     { path: '/css3', component: CSS3, meta: { title: 'css3展示' } },
     { path: '/vue', component: VUE, meta: { title: 'vue展示' } },
     { path: '/webp', component: WEBP, meta: { title: 'webp展示' } },
+    { path: '/chart', component: Chart, meta: { title: 'ChartJs展示' } },
     { path: '*', component: NotFound }
   ]
 })
