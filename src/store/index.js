@@ -5,28 +5,28 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    chartDataX: {
+    chartData: {
       aaa: 111
     }
   },
   mutations: {
-    init (state, chartDataX) {
-      state.chartDataX = chartDataX
+    init (state, chartData) {
+      state.chartData = chartData
     },
     updateData (state, {pos, val}) {
       const level = pos.split('.')
       switch (level.length) {
         case 1:
-          state.chartDataX[level[0]] = val
+          state.chartData[level[0]] = val
           break;
         case 2:
-          state.chartDataX[level[0]][level[1]] = val
+          state.chartData[level[0]][level[1]] = val
           break;
         case 3:
-          state.chartDataX[level[0]][level[1]][level[2]] = val
+          state.chartData[level[0]][level[1]][level[2]] = val
           break;
         case 4:
-          state.chartDataX[level[0]][level[1]][level[2]][level[3]] = val
+          state.chartData[level[0]][level[1]][level[2]][level[3]] = val
           break;
       
         default:
@@ -35,8 +35,8 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    init ({commit}, chartDataX) {
-      commit('init', chartDataX)
+    init ({commit}, chartData) {
+      commit('init', chartData)
     },
     updateData ({commit}, payload) {
       commit('updateData', payload)

@@ -2,13 +2,13 @@
   <div id="Chart">
     <Wrapper title="Line">
       <XLine />
-      <!-- {{chartData}} -->
+      {{chartData}}
     </Wrapper>
   </div>
 </template>
 
 <script>
-// import { mapState } from 'vuex'
+import { mapState } from 'vuex'
 
 import XLine from './Line'
 
@@ -18,9 +18,9 @@ export default {
     XLine
   },
   computed: {
-    // ...mapState([
-    //   'chartData'
-    // ])
+    ...mapState([
+      'chartData'
+    ])
   }
 }
 </script>

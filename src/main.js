@@ -1,4 +1,4 @@
-import Vue from 'vue/dist/vue.js'
+import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from './store'
 import WzhMarkdown from './components/WzhMarkdown'
@@ -15,7 +15,8 @@ import Chart from './pages/chart/Index.vue'
 
 Vue.config.productionTip = false
 
-Vue.use(VueRouter) 
+Vue.use(VueRouter)
+
 Vue.component('WzhMarkdown', WzhMarkdown)
 Vue.component('Wrapper', Wrapper)
 Vue.component('Group', Group)
@@ -37,11 +38,8 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
-const app = new Vue({
+new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount('#app')
-
-console.log(store)
-console.log(app)
