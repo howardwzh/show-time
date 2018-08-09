@@ -2,7 +2,7 @@
   <div id="XLine" class="chart">
     <div class="chart-dashboard">
       <div class="chart-dashboard-config">
-        <ChartConfig :chartData.sync="chartConfig" />
+        <!-- <ChartConfig :chartData.sync="chartConfig" /> -->
       </div>
       <div class="chart-dashboard-show">
         <Chart :chartData.sync="chartData" />
@@ -15,7 +15,7 @@
 <script>
 import beautify from 'js-beautify'
 import Chart from '../../components/Chart'
-import ChartConfig from '../../components/ChartConfig'
+// import ChartConfig from '../../components/ChartConfig'
 
 const chartData = {
   // The type of chart we want to create
@@ -58,8 +58,8 @@ export default {
     }
   },
   components: {
-    Chart,
-    ChartConfig
+    Chart
+    // ChartConfig
   },
   methods: {
     setChartData () {

@@ -1,9 +1,11 @@
 import Vue from 'vue/dist/vue.js'
 import VueRouter from 'vue-router'
+import store from './store'
 import WzhMarkdown from './components/WzhMarkdown'
 import Wrapper from './components/Wrapper'
 import Group from './components/Group'
 import App from './App.vue'
+import Home from './Home.vue'
 import NotFound from './NotFound.vue'
 import HTML5 from './pages/html5/Index.vue'
 import CSS3 from './pages/css3/Index.vue'
@@ -20,7 +22,7 @@ Vue.component('Group', Group)
 
 const router = new VueRouter({
   routes: [
-    { path: '/', component: App },
+    { path: '/', component: Home },
     { path: '/html5', component: HTML5, meta: { title: 'html5展示' } },
     { path: '/css3', component: CSS3, meta: { title: 'css3展示' } },
     { path: '/vue', component: VUE, meta: { title: 'vue展示' } },
@@ -35,8 +37,11 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
-new Vue({
-  el: '#app',
+const app = new Vue({
   router,
-  template: '<router-view></router-view>'
-})
+  store,
+  render: h => h(App)
+}).$mount('#app')
+
+console.log(store)
+console.log(app)
