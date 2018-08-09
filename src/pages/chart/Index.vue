@@ -1,26 +1,20 @@
 <template>
-  <div id="Chart">
-    <Wrapper title="Line">
-      <XLine />
-      {{chartData}}
+  <div id="ChartIndex">
+    <Wrapper title="ChartJS">
+      <ChartJS />
     </Wrapper>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
-import XLine from './Line'
+import ChartJS from './ChartJS'
 
 export default {
-  name: 'Chart',
+  name: 'ChartIndex',
   components: {
-    XLine
+    ChartJS
   },
   computed: {
-    ...mapState([
-      'chartData'
-    ])
   }
 }
 </script>

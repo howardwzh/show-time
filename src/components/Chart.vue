@@ -35,9 +35,12 @@ export default {
     updateChart: function () {
       if (!this.chartData.type) return
       const deepChartData = JSON.parse(JSON.stringify(this.chartData))
-      this.myChart.config.type = deepChartData.type,
+      const datasets = deepChartData.data.datasets
+      delete deepChartData.data.datasets
+      this.myChart.config.type = deepChartData.type
+      this.myChart.data = {...this.myChart.data, ...deepChartData.data}
       this.myChart.data.datasets.forEach((item, index) => {
-        this.myChart.data.datasets[index] = {...item, ...deepChartData.data.datasets[index]}
+        this.myChart.data.datasets[index] = {...item, ...datasets[index]}
       })
       this.myChart.options = {...this.myChart.options, ...deepChartData.options}
       this.myChart.update()

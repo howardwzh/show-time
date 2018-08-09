@@ -1,44 +1,47 @@
 <template>
   <div id="ChartConfig" class="chart-config">
-    <div v-for="(val, key) in chartData" :key="key">
-      {{renderHelper(val, key, 0)}}
-    </div>
+    <RenderHelper :data.sync="chartData" :keyUpHandle.sync="keyUpHandle" root="chartData" />
   </div>
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 import checkType from '../assets/utils/checkType.js'
+import RenderHelper from './RenderHelper'
 
 export default {
   name: 'ChartConfig',
   props: {
-    chartData: Object
   },
   data () {
     return {
-      checkType
+      form: {
+        type: null
+      }
     }
   },
+  components: {
+    RenderHelper
+  },
   computed: {
-    
+    ...mapState([
+      'chartData'
+    ])
   },
   methods: {
-    renderHelper (val, key, level) {
-      const _level = (level || 0) + 1
-      let result = null
-      switch (this.checkType(val)) {
-        case 'object':
-          for (const k in val) {
-            result += this.renderHelper(val[k], k, _level)
-          }
-          break;
-      
-        default:
-          result = (<div><label>key</label><input type="text" v-model="val" /></div>)
-          break;
+    ...mapActions([
+      'updateData'
+    ]),
+    checkType (obj) {
+      return checkType(obj)
+    },
+    keyUpHandle (key, value) {
+      if (/^\[.*\]$/.test(value)) {
+        value = JSON.parse(value)
+      } else if (/true|false/.test(value)) {
+        value = value === 'true'
       }
-      console.log(_level)
-      return result
+      this.updateData({pos: key, val: value })
     }
   }
 }
