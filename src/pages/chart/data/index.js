@@ -1,9 +1,6 @@
+import types from './types'
+import desc from './desc'
 import lineData from './line'
 import barData from './bar'
 
-
-const types = [
-  'line', 'bar', 'radar', 'pie', 'doughnut', 'polarArea', 'bubble', 'scatter'
-]
-
-export {types, lineData, barData}
+export {types, desc, lineData, barData}

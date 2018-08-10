@@ -7,6 +7,11 @@
           <option v-for="item in types" :value="item" :key="item" :selected="item === currentType">{{item}}</option>
         </select>
       </label>
+      <div class="item-desc" v-if="getDescFromKey(`chartData.type`)">
+        <label v-for="(dv, dk) in getDescFromKey(`chartData.type`)" :key="dk">
+          {{dk}}: <span>{{dv}}</span>
+        </label>
+      </div>
     </div>
     <ChartConfigFormRender :data.sync="chartData" root="chartData" />
   </div>
@@ -15,7 +20,7 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import ChartConfigFormRender from './ChartConfigFormRender'
-import * as allChartdata from './data/'
+import { types, desc } from './data'
 
 export default {
   name: 'ChartConfig',
@@ -26,7 +31,7 @@ export default {
   },
   data () {
     return {
-      types: allChartdata.types,
+      types: types,
       currentType: 'line'
     }
   },
@@ -45,6 +50,9 @@ export default {
     setChartType (type) {
       this.currentType = type
       this.initData(type)
+    },
+    getDescFromKey (key) {
+      return desc[key.replace(/\.\d/g, '')]
     }
   }
 }
