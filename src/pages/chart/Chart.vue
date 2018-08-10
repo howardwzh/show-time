@@ -4,6 +4,7 @@
 
 <script>
 import Chart from 'chart.js'
+import _cloneDeep from 'lodash/cloneDeep'
 
 export default {
   name: 'Chart',
@@ -24,7 +25,7 @@ export default {
   methods: {
     createChart () {
       if (!this.chartData.type) return
-      const deepChartData = JSON.parse(JSON.stringify(this.chartData))
+      const deepChartData = _cloneDeep(this.chartData)
       const ctx = this.$el
       this.myChart = new Chart(ctx, {
         type: deepChartData.type,
@@ -34,13 +35,13 @@ export default {
     },
     updateChart: function () {
       if (!this.chartData.type) return
-      const deepChartData = JSON.parse(JSON.stringify(this.chartData))
+      const deepChartData = _cloneDeep(this.chartData)
       const datasets = deepChartData.data.datasets
       delete deepChartData.data.datasets
       this.myChart.config.type = deepChartData.type
       this.myChart.data = {...this.myChart.data, ...deepChartData.data}
-      this.myChart.data.datasets.forEach((item, index) => {
-        this.myChart.data.datasets[index] = {...item, ...datasets[index]}
+      datasets.forEach((item, index) => {
+        this.myChart.data.datasets[index] = {...this.myChart.data.datasets[index], ...item}
       })
       this.myChart.options = {...this.myChart.options, ...deepChartData.options}
       this.myChart.update()

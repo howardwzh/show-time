@@ -2,10 +2,6 @@
   <div id="ChartJS" class="chart">
     <div class="chart-dashboard">
       <div class="chart-dashboard-config">
-        <select @change="setChartType($event.target.value)">
-          <option selected value="">请选择</option>
-          <option v-for="item in types" :value="item" :key="item">{{item}}</option>
-        </select>
         <ChartConfig />
       </div>
       <div class="chart-dashboard-show">
@@ -17,23 +13,16 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 import beautify from 'js-beautify'
-import Chart from '../../components/Chart'
-import ChartConfig from '../../components/ChartConfig'
-import * as allChartdata from './data/'
+import Chart from './Chart'
+import ChartConfig from './ChartConfig'
 
 export default {
   name: 'ChartJS',
   data () {
     return {
-      types: allChartdata.types
     }
-  },
-  created () {
-    setTimeout(() => {
-      this.setChartType('line')
-    }, 1000);
   },
   computed: {
     formatJS () {
@@ -48,13 +37,6 @@ export default {
     ChartConfig
   },
   methods: {
-    ...mapActions([
-      'initData',
-      'updateData'
-    ]),
-    setChartType (type) {
-      this.initData(allChartdata[`${type}Data`])
-    }
   }
 }
 </script>
