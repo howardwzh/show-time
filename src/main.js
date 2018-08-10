@@ -23,7 +23,7 @@ Vue.component('Group', Group)
 
 const router = new VueRouter({
   routes: [
-    { path: '/', component: Home },
+    { path: '/', component: Home, meta: { title: 'Show Time' } },
     { path: '/html5', component: HTML5, meta: { title: 'html5展示' } },
     { path: '/css3', component: CSS3, meta: { title: 'css3展示' } },
     { path: '/vue', component: VUE, meta: { title: 'vue展示' } },

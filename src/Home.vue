@@ -1,7 +1,7 @@
 <template>
   <div id="App">
-    <img src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <span class="icon-wzh logo"></span>
+    <HelloWorld msg="Welcome to Show Time"/>
   </div>
 </template>
 
@@ -16,7 +16,8 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less">
+@import './assets/font-icon/css/fontello.css';
 #App {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -24,5 +25,10 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  .logo {
+    font-size: 100px;
+    line-height: 1;
+    color: #E3B220;
+  }
 }
 </style>
