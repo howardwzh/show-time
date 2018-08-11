@@ -1,22 +1,35 @@
-const chartData = {
-  // The type of chart we want to create
-  type: 'line',
+import {makeRandomToArray, makeChartColors} from './utils'
 
-  // The data for our dataset
-  data: {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
-    datasets: [{
-      label: "My First dataset",
-      backgroundColor: 'rgb(255, 99, 132)',
-      borderColor: 'rgb(255, 99, 132)',
-      data: [0, 10, 5, 2, 20, 30, 45],
-      steppedLine: false
-    }]
-  },
-  // Configuration options go here
-  options: {
-    
+const line = () => {
+  const {bgColor, bdColor} = makeChartColors()
+  return {
+    // The type of chart we want to create
+    type: 'line',
+
+    // The data for our dataset
+    data: {
+      labels: ["January", "February", "March", "April", "May", "June", "July"],
+      datasets: [{
+        label: "Line dataset",
+        backgroundColor: bgColor,
+        borderColor: bdColor,
+        borderDash: [],
+        fill: false,
+        data: makeRandomToArray({min: 0, max: 50, num: 7}),
+        steppedLine: false
+      }]
+    },
+    // Configuration options go here
+    options: {
+      maintainAspectRatio: false,
+      spanGaps: false,
+      elements: {
+				line: {
+					tension: 0.3
+				}
+			}
+    }
   }
 }
 
-export default chartData
+export default line

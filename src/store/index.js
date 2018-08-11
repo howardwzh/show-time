@@ -3,10 +3,6 @@ import Vuex from 'vuex'
 import * as allChartData from '../pages/chart/data'
 import _cloneDeep from 'lodash/cloneDeep'
 
-let tempState = {
-  ChartData: {}
-}
-
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -16,8 +12,8 @@ export default new Vuex.Store({
   },
   mutations: {
     initData (state, type) {
-      state.chartData = _cloneDeep(allChartData[`${type}Data`])
-      tempState.chartData = _cloneDeep(allChartData[`${type}Data`])
+      state.type = type
+      state.chartData = _cloneDeep(allChartData[`${type}Data`]())
     },
     updateData (state, {pos, val}) {
       const level = pos.split('.')
@@ -44,21 +40,24 @@ export default new Vuex.Store({
     },
     addData (state, {pos}) {
       const level = pos.split('.')
+      const tempState = {
+        chartData: _cloneDeep(allChartData[`${state.type}Data`]())
+      }
       switch (level.length) {
         case 1:
-          state[level[0]].push(_cloneDeep(tempState[level[0]][0]))
+          state[level[0]].push(tempState[level[0]][0])
           break;
         case 2:
-          state[level[0]][level[1]].push(_cloneDeep(tempState[level[0]][level[1]][0]))
+          state[level[0]][level[1]].push(tempState[level[0]][level[1]][0])
           break;
         case 3:
-          state[level[0]][level[1]][level[2]].push(_cloneDeep(tempState[level[0]][level[1]][level[2]][0]))
+          state[level[0]][level[1]][level[2]].push(tempState[level[0]][level[1]][level[2]][0])
           break;
         case 4:
-          state[level[0]][level[1]][level[2]][level[3]].push(_cloneDeep(tempState[level[0]][level[1]][level[2]][level[3]][0]))
+          state[level[0]][level[1]][level[2]][level[3]].push(tempState[level[0]][level[1]][level[2]][level[3]][0])
           break;
         case 5:
-          state[level[0]][level[1]][level[2]][level[3]][level[4]].push(_cloneDeep(tempState[level[0]][level[1]][level[2]][level[3]][level[4]][0]))
+          state[level[0]][level[1]][level[2]][level[3]][level[4]].push(tempState[level[0]][level[1]][level[2]][level[3]][level[4]][0])
           break;
       
         default:

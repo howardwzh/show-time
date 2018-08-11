@@ -42,19 +42,28 @@ export default {
 </script>
 
 <style lang="less">
+@configWidth: 500px;
 .chart {
   &-dashboard {
-    display: flex;
+    position: relative;
     &-config {
-      flex: 2;
+      width: @configWidth;
+      max-height: 600px;
+      overflow: auto;
     }
     &-show {
-      flex: 10;
+      position: absolute;
+      top: 0;
+      left: @configWidth;
+      right: 0;
+      bottom: 0;
+      margin-left: 20px;
     }
   }
   &-code {
     width: 100%;
     height: 300px;
+    margin-top: 20px;
   }
 }
 </style>

@@ -27,6 +27,7 @@ export default {
       if (!this.chartData.type) return
       const deepChartData = _cloneDeep(this.chartData)
       const ctx = this.$el
+      this.myChart && this.myChart.destroy()
       this.myChart = new Chart(ctx, {
         type: deepChartData.type,
         data: deepChartData.data,
@@ -38,7 +39,6 @@ export default {
       const deepChartData = _cloneDeep(this.chartData)
       const datasets = deepChartData.data.datasets
       delete deepChartData.data.datasets
-      this.myChart.config.type = deepChartData.type
       this.myChart.data = {...this.myChart.data, ...deepChartData.data}
       datasets.forEach((item, index) => {
         this.myChart.data.datasets[index] = {...this.myChart.data.datasets[index], ...item}
@@ -50,7 +50,10 @@ export default {
   watch: {
     chartData: {
       handler () {
-        if (!this.myChart) {
+        if (
+          !this.myChart ||
+          this.myChart.config.type !== this.chartData.type // 已经有图表，类型不同时不能直接更新，需要重新生成
+        ) {
           this.createChart()
         } else {
           this.updateChart()

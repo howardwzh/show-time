@@ -1,22 +1,30 @@
-const chartData = {
-  // The type of chart we want to create
-  type: 'bar',
+import {makeRandomToArray, makeChartColors} from './utils'
 
-  // The data for our dataset
-  data: {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
-    datasets: [{
-      label: "My First dataset",
-      backgroundColor: 'rgb(255, 99, 132)',
-      borderColor: 'rgb(255, 99, 132)',
-      data: [0, 10, 5, 2, 20, 30, 45],
-      steppedLine: false
-    }]
-  },
-  // Configuration options go here
-  options: {
-    
+const bar = () => {
+  const {bgColor, bdColor} = makeChartColors()
+  return {
+    // The type of chart we want to create
+    type: 'bar',
+
+    // The data for our dataset
+    data: {
+      labels: ["January", "February", "March", "April", "May", "June", "July"],
+      datasets: [{
+        label: "Bar dataset",
+        backgroundColor: bgColor,
+        borderColor: bdColor,
+        data: makeRandomToArray({min: 0, max: 50, num: 7}),
+        borderWidth: 1
+      }]
+    },
+    // Configuration options go here
+    options: {
+      responsive: true,
+      legend: {
+        position: 'top'
+      }
+    }
   }
 }
 
-export default chartData
+export default bar
