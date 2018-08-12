@@ -18,7 +18,7 @@ export default {
   },
   data () {
     return {
-      id: new Date().getTime(),
+      id: `chart-show`,
       myChart: null
     }
   },
@@ -26,7 +26,7 @@ export default {
     createChart () {
       if (!this.chartData.type) return
       const deepChartData = _cloneDeep(this.chartData)
-      const ctx = this.$el
+      const ctx = this.chartData.type === 'bubble' ? this.id : this.$el
       this.myChart && this.myChart.destroy()
       this.myChart = new Chart(ctx, {
         type: deepChartData.type,

@@ -17,6 +17,7 @@ import { mapState } from 'vuex'
 import beautify from 'js-beautify'
 import Chart from './Chart'
 import ChartConfig from './ChartConfig'
+import {stringifyPro} from './assets/utils'
 
 export default {
   name: 'ChartJS',
@@ -26,7 +27,7 @@ export default {
   },
   computed: {
     formatJS () {
-      return beautify(JSON.stringify(this.chartData))
+      return beautify(stringifyPro(this.chartData))
     },
     ...mapState([
       'chartData'

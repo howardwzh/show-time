@@ -2,7 +2,7 @@
   <div>
     <div @click.self="formRenderClickHandle($event)" class="form-render" :class="{'tip-icon': getDescFromKey(`${root}.${key}`)}" v-for="(val, key) in data" :key="key">
       <div v-if="!(/array|object/).test(checkType(val)) && key !== 'type'">
-        <label class="input-wrapper"><span>{{key}}: </span><input type="text" :value="val" @keyup="updateData({pos: `${root}.${key}`, val: $event.target.value})"/></label>  
+        <label class="input-wrapper"><span>{{key}}: </span><input type="text" :value="checkType(val) === 'function' ? 'function' : val" :disabled="checkType(val) === 'function'" @keyup="updateData({pos: `${root}.${key}`, val: $event.target.value})"/></label>  
       </div>
       <div v-else-if="checkType(val) === 'object'">
         <label>{{key}}: </label>
@@ -28,7 +28,7 @@
 <script>
 import { mapActions } from 'vuex'
 import checkType from '../../assets/utils/checkType.js'
-import { desc } from './data'
+import { desc } from './assets/data'
 
 export default {
   name: 'ChartConfigFormRender',

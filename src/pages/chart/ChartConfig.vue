@@ -15,7 +15,7 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import ChartConfigFormRender from './ChartConfigFormRender'
-import { types, desc } from './data'
+import { types, desc } from './assets/data'
 
 export default {
   name: 'ChartConfig',

@@ -1,9 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import * as allChartData from '../pages/chart/data'
+import {getChartDataByType} from '../pages/chart/assets/utils'
 import _cloneDeep from 'lodash/cloneDeep'
+import _set from 'lodash/set'
+import _get from 'lodash/get'
 
 Vue.use(Vuex)
+
+let index = 0
 
 export default new Vuex.Store({
   state: {
@@ -12,57 +16,21 @@ export default new Vuex.Store({
   },
   mutations: {
     initData (state, type) {
+      index = 1
       state.type = type
-      state.chartData = _cloneDeep(allChartData[`${type}Data`]())
+      state.chartData = _cloneDeep(getChartDataByType(type, index))
     },
     updateData (state, {pos, val}) {
       const level = pos.split('.')
-      switch (level.length) {
-        case 1:
-          state[level[0]] = val
-          break;
-        case 2:
-          state[level[0]][level[1]] = val
-          break;
-        case 3:
-          state[level[0]][level[1]][level[2]] = val
-          break;
-        case 4:
-          state[level[0]][level[1]][level[2]][level[3]] = val
-          break;
-        case 5:
-          state[level[0]][level[1]][level[2]][level[3]][level[4]] = val
-          break;
-      
-        default:
-          break;
-      }
+      _set(state, level, val)
     },
     addData (state, {pos}) {
       const level = pos.split('.')
       const tempState = {
-        chartData: _cloneDeep(allChartData[`${state.type}Data`]())
+        chartData: _cloneDeep(getChartDataByType(state.type, ++index))
       }
-      switch (level.length) {
-        case 1:
-          state[level[0]].push(tempState[level[0]][0])
-          break;
-        case 2:
-          state[level[0]][level[1]].push(tempState[level[0]][level[1]][0])
-          break;
-        case 3:
-          state[level[0]][level[1]][level[2]].push(tempState[level[0]][level[1]][level[2]][0])
-          break;
-        case 4:
-          state[level[0]][level[1]][level[2]][level[3]].push(tempState[level[0]][level[1]][level[2]][level[3]][0])
-          break;
-        case 5:
-          state[level[0]][level[1]][level[2]][level[3]][level[4]].push(tempState[level[0]][level[1]][level[2]][level[3]][level[4]][0])
-          break;
-      
-        default:
-          break;
-      }
+      const originArray = _get(state, level)
+      originArray.push(_get(tempState, level)[0])
     }
   },
   actions: {
