@@ -4,37 +4,41 @@ import * as allChartData from './data'
 const getChartDataByType = (type, index) => {
   const chartData = allChartData[type]
   const randomeData = _getChartDataHelper(type, index)
-  const pointForBubble = type ==='bubble' ? _makePointForBubble() : null
+  const pointForBubble = type === 'bubble' ? _makePointForBubble() : null
   chartData.data.datasets[0] = { ...chartData.data.datasets[0], ...randomeData }
   if (pointForBubble) {
-    chartData.options.elements.point = { ...chartData.options.elements.point, ...pointForBubble }
+    chartData.options.elements.point = {
+      ...chartData.options.elements.point,
+      ...pointForBubble
+    }
   }
   return chartData
 }
 
 const _getChartDataHelper = (type, index) => {
   let randomeData = {}
-  const { backgroundColor, borderColor } = _makeRandomColorsForChart() // eslint-disable-line
+  const { backgroundColor, borderColor } = _makeBgBdColors() // eslint-disable-line
 
-  switch (type) {
-    case 'pie':
+  switch (true) {
+    case /^(pie|doughnut|polarArea)$/.test(type):
       randomeData = {
         label: `${type} ${index}`,
-        backgroundColor: _makeRandomColorsToArray({ num: 5 }),
-        data: _makeRandomToArray({ min: -50, max: 50, num: 5 })
+        backgroundColor: _makeRandomColorsToArray({}),
+        data: _makeRandomToArray({ num: 5 })
       }
       break
-    case 'doughnut':
+    case /^(scatter)$/.test(type):
       randomeData = {
         label: `${type} ${index}`,
-        backgroundColor: _makeRandomColorsToArray({ num: 5 }),
-        data: _makeRandomToArray({ min: -50, max: 50, num: 5 })
+        backgroundColor,
+        borderColor,
+        data: _makeRandomForScatter({})
       }
       break
 
-    case 'bubble':
+    case /^(bubble)$/.test(type):
       randomeData = {
-        data: _makeRandomForBubble({ num: 5 })
+        data: _makeRandomForBubble({})
       }
       break
 
@@ -43,14 +47,14 @@ const _getChartDataHelper = (type, index) => {
         label: `${type} ${index}`,
         backgroundColor,
         borderColor,
-        data: _makeRandomToArray({ min: -50, max: 50, num: 7 })
+        data: _makeRandomToArray({})
       }
       break
   }
   return randomeData
 }
 
-const _makeRandomToArray = ({ min, max, num }) => {
+const _makeRandomToArray = ({ min = -50, max = 50, num = 7 }) => {
   const arr = []
   for (let i = 0; i < num; i++) {
     arr.push(_random(min, max))
@@ -58,66 +62,83 @@ const _makeRandomToArray = ({ min, max, num }) => {
   return arr
 }
 
-const _makeRandomColorsForChart = () => {
-  const rgb = `${_random(0, 255)}, ${_random(0, 255)}, ${_random(0, 255)}`
-  return {
-    backgroundColor: `rgba(${rgb}, 0.7)`,
-    borderColor: `rgba(${rgb}, 0.9)`
+const _makeBgBdColors = (function () {
+  const allBgBdColors = {}
+  return (index) => {
+    if (!index || !allBgBdColors[index]) {
+      const rgb = `${_random(0, 255)}, ${_random(0, 255)}, ${_random(0, 255)}`
+      allBgBdColors[index] = {
+        backgroundColor: `rgba(${rgb}, 0.7)`,
+        borderColor: `rgba(${rgb}, 0.9)`
+      }
+    }
+    return allBgBdColors[index]
   }
-}
+})()
 
-const _makeRandomColorsToArray = ({ num }) => {
+const _makeRandomColorsToArray = ({ num = 5 }) => {
   const arr = []
   for (let i = 0; i < num; i++) {
-    arr.push(`rgb(${_random(0, 255)}, ${_random(0, 255)}, ${_random(0, 255)})`)
+    arr.push(`rgba(${_random(0, 255)}, ${_random(0, 255)}, ${_random(0, 255)}, 0.6)`)
   }
   return arr
 }
 
-const _makeRandomForBubble = ({ num }) => {
+const _makeRandomForBubble = ({ minX = -50, maxX = 50, minY = -50, maxY = 50, minV = 200, maxV = 600, num = 5 }) => {
   const arr = []
   for (let i = 0; i < num; i++) {
     arr.push({
-      x: _random(-50, 50),
-      y: _random(-50, 50),
-      v: _random(200, 600)
+      x: _random(minX, maxX),
+      y: _random(minY, maxY),
+      v: _random(minV, maxV)
     })
   }
   return arr
 }
 
 const _makePointForBubble = () => {
-    return {
-        backgroundColor: function() {
-          return _makeRandomColorsToArray({num: 1})[0];
-        },
+  return {
+    backgroundColor: (context) => {
+      return _makeBgBdColors(`${context.datasetIndex}_${context.dataIndex}`).backgroundColor
+    },
 
-        borderColor: function() {
-          return _makeRandomColorsToArray({num: 1})[0];
-        },
+    borderColor: (context) => {
+      return _makeBgBdColors(`${context.datasetIndex}_${context.dataIndex}`).borderColor
+    },
 
-        borderWidth: function(context) {
-          return Math.min(Math.max(1, context.datasetIndex + 1), 8);
-        },
+    borderWidth: function(context) {
+      return Math.min(Math.max(1, context.datasetIndex + 1), 8)
+    },
 
-        hoverBackgroundColor: 'transparent',
+    hoverBackgroundColor: 'transparent',
 
-        hoverBorderColor: function() {
-          return _makeRandomColorsToArray({num: 1})[0];
-        },
+    hoverBorderColor: function() {
+      return _makeRandomColorsToArray({ num: 1 })[0]
+    },
 
-        hoverBorderWidth: function(context) {
-          var value = context.dataset.data[context.dataIndex];
-          return Math.round(8 * value.v / 1000);
-        },
+    hoverBorderWidth: function(context) {
+      var value = context.dataset.data[context.dataIndex]
+      return Math.round((8 * value.v) / 1000)
+    },
 
-        radius: function(context) {
-          var value = context.dataset.data[context.dataIndex];
-          var size = context.chart.width;
-          var base = Math.abs(value.v) / 1000;
-          return (size / 24) * base;
-        }
-      }
+    radius: function(context) {
+      var value = context.dataset.data[context.dataIndex]
+      var size = context.chart.width
+      var base = Math.abs(value.v) / 1000
+      return (size / 24) * base
+    }
+  }
+}
+
+const _makeRandomForScatter = ({ minX = -50, maxX = 50, minY = -50, maxY = 50, num = 7 }) => {
+  const arr = []
+  for (let i = 0; i < num; i++) {
+    arr.push({
+      x: _random(minX, maxX),
+      y: _random(minY, maxY)
+    })
+  }
+  return arr
 }
 
 const stringifyPro = obj => {
@@ -140,4 +161,10 @@ const stringifyPro = obj => {
   return json
 }
 
-export { getChartDataByType, stringifyPro }
+const firstUpperCase = (str) => {
+  return str.replace(/^(\w{1})/, ($1) => {
+    return $1.toUpperCase()
+  })
+}
+
+export { getChartDataByType, stringifyPro, firstUpperCase }

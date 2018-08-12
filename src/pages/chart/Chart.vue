@@ -1,14 +1,16 @@
 <template>
-  <canvas :id="id" :width="width" :height="height"></canvas>
+  <canvas id="chart-show" :width="width" :height="height"></canvas>
 </template>
 
 <script>
 import Chart from 'chart.js'
 import _cloneDeep from 'lodash/cloneDeep'
+import {firstUpperCase} from './assets/utils'
 
 export default {
   name: 'Chart',
   props: {
+    type: String,
     chartData: Object,
     width: String,
     height: String
@@ -16,26 +18,28 @@ export default {
   mounted () {
     this.createChart()
   },
+  computed: {
+  },
   data () {
     return {
-      id: `chart-show`,
       myChart: null
     }
   },
   methods: {
     createChart () {
-      if (!this.chartData.type) return
+      if (!this.type) return
       const deepChartData = _cloneDeep(this.chartData)
-      const ctx = this.chartData.type === 'bubble' ? this.id : this.$el
+      const ctx = this.$el
       this.myChart && this.myChart.destroy()
-      this.myChart = new Chart(ctx, {
+      const ChartForNew = Chart[firstUpperCase(this.type)] || Chart
+      this.myChart = new ChartForNew(ctx, {
         type: deepChartData.type,
         data: deepChartData.data,
         options: deepChartData.options
       })
     },
     updateChart: function () {
-      if (!this.chartData.type) return
+      if (!this.type) return
       const deepChartData = _cloneDeep(this.chartData)
       const datasets = deepChartData.data.datasets
       delete deepChartData.data.datasets
@@ -52,7 +56,7 @@ export default {
       handler () {
         if (
           !this.myChart ||
-          this.myChart.config.type !== this.chartData.type // 已经有图表，类型不同时不能直接更新，需要重新生成
+          this.myChart.config.type !== this.type // 已经有图表，类型不同时不能直接更新，需要重新生成
         ) {
           this.createChart()
         } else {

@@ -27,7 +27,7 @@ export default {
   data () {
     return {
       types: types,
-      currentType: 'line'
+      currentType: ''
     }
   },
   components: {

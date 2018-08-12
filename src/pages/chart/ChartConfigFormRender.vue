@@ -2,14 +2,14 @@
   <div>
     <div @click.self="formRenderClickHandle($event)" class="form-render" :class="{'tip-icon': getDescFromKey(`${root}.${key}`)}" v-for="(val, key) in data" :key="key">
       <div v-if="!(/array|object/).test(checkType(val)) && key !== 'type'">
-        <label class="input-wrapper"><span>{{key}}: </span><input type="text" :value="checkType(val) === 'function' ? 'function' : val" :disabled="checkType(val) === 'function'" @keyup="updateData({pos: `${root}.${key}`, val: $event.target.value})"/></label>  
+        <label class="input-wrapper"><span>{{key}}: </span><input type="text" :value="checkType(val) === 'function' ? 'function' : val" :disabled="checkType(val) === 'function'" @keyup="updateDataHandle(`${root}.${key}`, $event)"/></label>  
       </div>
       <div v-else-if="checkType(val) === 'object'">
         <label>{{key}}: </label>
         <ChartConfigFormRender :data.sync="val" :root="`${root}.${key}`" />
       </div>
       <div v-else-if="checkType(val) === 'array' && !(/array|object/).test(checkType(val[0]))">
-        <label class="input-wrapper"><span>{{key}}: </span> [<input type="text" :value="arrayStringfiy(val)" @keyup="updateData({pos: `${root}.${key}`, val: `[${$event.target.value}]`})"/>]</label>
+        <label class="input-wrapper"><span>{{key}}: </span> [<input type="text" :value="arrayStringfiy(val)" @keyup="updateDataHandle(`${root}.${key}`, $event, 'array')"/>]</label>
       </div>
       <div v-else-if="checkType(val) === 'array' && checkType(val[0]) === 'object'">
         <label>{{key}}: </label><button @click="addData({pos: `${root}.${key}`})">+</button>
@@ -47,6 +47,14 @@ export default {
       'updateData',
       'addData'
     ]),
+    updateDataHandle (pos, e, type) {
+      const val = e.target.value
+      if (type === 'array' && /(,\s*$)|([^0-9,.\- ])/.test(val)) {
+        e.target.value = val.replace(/[^0-9,.\- [\]+]/g, '')
+        return
+      }
+      this.updateData({pos, val: `[${val}]`})
+    },
     checkType (obj) {
       return checkType(obj)
     },

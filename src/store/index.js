@@ -11,14 +11,14 @@ let index = 0
 
 export default new Vuex.Store({
   state: {
-    type: 'line',
+    type: '',
     chartData: {}
   },
   mutations: {
     initData (state, type) {
       index = 1
-      state.type = type
       state.chartData = _cloneDeep(getChartDataByType(type, index))
+      state.type = type
     },
     updateData (state, {pos, val}) {
       const level = pos.split('.')
@@ -34,8 +34,8 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    initData ({commit}, chartData) {
-      commit('initData', chartData)
+    initData ({commit}, type) {
+      commit('initData', type)
     },
     updateData ({commit}, {pos, val}) {
       if (/^\[.*\]$/.test(val)) {

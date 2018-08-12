@@ -5,7 +5,7 @@
         <ChartConfig />
       </div>
       <div class="chart-dashboard-show">
-        <Chart :chartData.sync="chartData" />
+        <Chart :type.sync="type" :chartData.sync="chartData" />
       </div>
     </div>
     <textarea class="chart-code" :value="formatJS" readonly></textarea>
@@ -30,6 +30,7 @@ export default {
       return beautify(stringifyPro(this.chartData))
     },
     ...mapState([
+      'type',
       'chartData'
     ])
   },
@@ -58,7 +59,7 @@ export default {
       left: @configWidth;
       right: 0;
       bottom: 0;
-      margin-left: 20px;
+      margin: 0 60px;
     }
   }
   &-code {
