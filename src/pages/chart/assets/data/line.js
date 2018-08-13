@@ -14,6 +14,7 @@ const data = {
   },
   options: {
     responsive: true,
+    maintainAspectRatio: false,
     title: { display: true, text: 'Chart.js Line Chart' },
     tooltips: { mode: 'index', intersect: false },
     hover: { mode: 'nearest', intersect: true },

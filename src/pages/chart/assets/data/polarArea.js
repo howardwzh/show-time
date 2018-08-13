@@ -17,6 +17,7 @@ const data = {
   },
   options: {
     responsive: true,
+    maintainAspectRatio: false,
     legend: { position: 'right' },
     title: { display: true, text: 'Chart.js Polar Area Chart' },
     scale: { ticks: { beginAtZero: true }, reverse: false },

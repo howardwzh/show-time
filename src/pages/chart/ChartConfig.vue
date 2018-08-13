@@ -103,7 +103,7 @@ export default {
       border: 1px solid rgba(255, 255, 255, 0.7);
       color: rgba(255, 255, 255, 0.7);
       text-align: center;
-      top: 14px;
+      top: 18px;
       right: 5px;
     }
   }

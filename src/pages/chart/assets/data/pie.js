@@ -16,7 +16,10 @@ const data = {
     ],
     labels: ['Red', 'Orange', 'Yellow', 'Green', 'Blue']
   },
-  options: { responsive: true }
+  options: {
+    responsive: true,
+    maintainAspectRatio: false
+  }
 }
 
 export default data

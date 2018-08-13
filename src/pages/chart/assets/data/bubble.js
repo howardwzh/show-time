@@ -69,10 +69,11 @@ const data = {
     ]
   },
   options: {
+    responsive: true,
+    maintainAspectRatio: false,
     aspectRatio: 1,
     legend: false,
     tooltips: false,
-
     elements: {
       point: {
         backgroundColor: 'colorize.bind(null, false)',
