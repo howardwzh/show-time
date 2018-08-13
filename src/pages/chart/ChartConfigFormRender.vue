@@ -8,10 +8,10 @@
         <label>{{key}}: </label>
         <ChartConfigFormRender :data.sync="val" :root="`${root}.${key}`" />
       </div>
-      <div v-else-if="checkType(val) === 'array' && !(/array|object/).test(checkType(val[0]))">
+      <div v-else-if="checkType(val) === 'array' && !(/object|array/).test(checkType(val[0]))">
         <label class="input-wrapper"><span>{{key}}: </span> [<textarea type="text" :value="arrayStringfiy(val)" @keyup="updateArrayDataHandle(`${root}.${key}`, $event)"></textarea>]</label>
       </div>
-      <div v-else-if="checkType(val) === 'array' && checkType(val[0]) === 'object'">
+      <div v-else-if="checkType(val) === 'array' && (/object|array/).test(checkType(val[0]))">
         <label>{{key}}: </label><button @click="addData({pos: `${root}.${key}`})">+</button>
         <ChartConfigFormRender :data.sync="val" :root="`${root}.${key}`" />
       </div>

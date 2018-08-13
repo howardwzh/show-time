@@ -12,7 +12,8 @@ let index = 0
 export default new Vuex.Store({
   state: {
     type: '',
-    chartData: {}
+    chartData: {},
+    chartDataChange: 1
   },
   mutations: {
     initData (state, type) {
@@ -23,6 +24,7 @@ export default new Vuex.Store({
     updateData (state, {pos, val}) {
       const level = pos.split('.')
       _set(state, level, val)
+      state.chartDataChange = 1 + state.chartDataChange % 2
     },
     addData (state, {pos}) {
       const level = pos.split('.')

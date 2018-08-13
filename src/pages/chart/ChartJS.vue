@@ -5,7 +5,7 @@
         <ChartConfig />
       </div>
       <div class="chart-dashboard-show">
-        <Chart :type.sync="type" :chartData.sync="chartData" />
+        <Chart :type.sync="type" :chartData.sync="chartData" :chartDataChange.sync="chartDataChange" />
       </div>
     </div>
     <textarea class="chart-code" :value="formatJS" readonly></textarea>
@@ -27,18 +27,19 @@ export default {
   },
   computed: {
     formatJS () {
-      return beautify(stringifyPro(this.chartData))
+      if (this.chartDataChange) {
+        return beautify(stringifyPro(this.chartData))
+      }
     },
     ...mapState([
       'type',
-      'chartData'
+      'chartData',
+      'chartDataChange'
     ])
   },
   components: {
     Chart,
     ChartConfig
-  },
-  methods: {
   }
 }
 </script>

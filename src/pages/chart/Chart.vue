@@ -1,5 +1,5 @@
 <template>
-  <canvas id="chart-show" :width="width" :height="height"></canvas>
+  <canvas id="chart-show"></canvas>
 </template>
 
 <script>
@@ -12,8 +12,7 @@ export default {
   props: {
     type: String,
     chartData: Object,
-    width: String,
-    height: String
+    chartDataChange: Number
   },
   mounted () {
     this.createChart()
@@ -52,18 +51,15 @@ export default {
     }
   },
   watch: {
-    chartData: {
-      handler () {
-        if (
-          !this.myChart ||
-          this.myChart.config.type !== this.type // 已经有图表，类型不同时不能直接更新，需要重新生成
-        ) {
-          this.createChart()
-        } else {
-          this.updateChart()
-        }
-      },
-      deep: true
+    chartDataChange: function () {
+      if (
+        !this.myChart ||
+        this.myChart.config.type !== this.type // 已经有图表，类型不同时不能直接更新，需要重新生成
+      ) {
+        this.createChart()
+      } else {
+        this.updateChart()
+      }
     }
   }
 }
