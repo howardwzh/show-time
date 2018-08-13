@@ -21,6 +21,7 @@ const data = {
     ]
   },
   options: {
+    maintainAspectRatio: false,
     legend: { position: 'top' },
     title: { display: true, text: 'Chart.js Radar Chart' },
     scale: { ticks: { beginAtZero: true } }

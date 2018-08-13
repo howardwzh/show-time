@@ -18,6 +18,7 @@ const data = {
   },
   options: {
     responsive: true,
+    maintainAspectRatio: false,
     legend: { position: 'top' },
     title: { display: true, text: 'Chart.js Doughnut Chart' },
     animation: { animateScale: true, animateRotate: true }

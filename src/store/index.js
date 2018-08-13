@@ -20,6 +20,7 @@ export default new Vuex.Store({
       index = 1
       state.chartData = _cloneDeep(getChartDataByType(type, index))
       state.type = type
+      state.chartDataChange = 1 + state.chartDataChange % 2
     },
     updateData (state, {pos, val}) {
       const level = pos.split('.')
@@ -33,6 +34,7 @@ export default new Vuex.Store({
       }
       const originArray = _get(state, level)
       originArray.push(_get(tempState, level)[0])
+      state.chartDataChange = 1 + state.chartDataChange % 2
     }
   },
   actions: {

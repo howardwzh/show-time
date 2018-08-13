@@ -14,6 +14,7 @@ const data = {
   },
   options: {
     responsive: true,
+    maintainAspectRatio: false,
     legend: {
       position: 'top'
     },

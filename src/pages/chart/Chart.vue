@@ -51,7 +51,7 @@ export default {
     }
   },
   watch: {
-    chartDataChange: function () {
+    chartDataChange () {
       if (
         !this.myChart ||
         this.myChart.config.type !== this.type // 已经有图表，类型不同时不能直接更新，需要重新生成

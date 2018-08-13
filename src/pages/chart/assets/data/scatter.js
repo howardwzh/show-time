@@ -18,6 +18,7 @@ const data = {
     ]
   },
   options: {
+    maintainAspectRatio: false,
     title: {
       display: true,
       text: 'Chart.js Scatter Chart'

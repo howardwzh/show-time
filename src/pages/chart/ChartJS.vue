@@ -5,7 +5,7 @@
         <ChartConfig />
       </div>
       <div class="chart-dashboard-show">
-        <Chart :type.sync="type" :chartData.sync="chartData" :chartDataChange.sync="chartDataChange" />
+        <Chart :type.sync="type" :chartData.sync="chartData" :chartDataChange="chartDataChange" />
       </div>
     </div>
     <textarea class="chart-code" :value="formatJS" readonly></textarea>
