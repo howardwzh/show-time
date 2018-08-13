@@ -9,7 +9,7 @@
         <ChartConfigFormRender :data.sync="val" :root="`${root}.${key}`" />
       </div>
       <div v-else-if="checkType(val) === 'array' && !(/array|object/).test(checkType(val[0]))">
-        <label class="input-wrapper"><span>{{key}}: </span> [<input type="text" :value="arrayStringfiy(val)" @keyup="updateDataHandle(`${root}.${key}`, $event, 'array')"/>]</label>
+        <label class="input-wrapper"><span>{{key}}: </span> [<textarea type="text" :value="arrayStringfiy(val)" @keyup="updateArrayDataHandle(`${root}.${key}`, $event)"></textarea>]</label>
       </div>
       <div v-else-if="checkType(val) === 'array' && checkType(val[0]) === 'object'">
         <label>{{key}}: </label><button @click="addData({pos: `${root}.${key}`})">+</button>
@@ -29,6 +29,7 @@
 import { mapActions } from 'vuex'
 import checkType from '../../assets/utils/checkType.js'
 import { desc } from './assets/data'
+import { isNumber, isColor } from './assets/validate'
 
 export default {
   name: 'ChartConfigFormRender',
@@ -47,19 +48,26 @@ export default {
       'updateData',
       'addData'
     ]),
-    updateDataHandle (pos, e, type) {
+    updateDataHandle (pos, e) {
       const val = e.target.value
-      if (type === 'array' && /(,\s*$)|([^0-9,.\- ])/.test(val)) {
-        e.target.value = val.replace(/[^0-9,.\- [\]+]/g, '')
+      this.updateData({pos, val})
+    },
+    updateArrayDataHandle (pos, e) {
+      const str = e.target.value
+      const arr = str.split('\n')
+      const arrLength = arr.length
+      if (isNumber(arr[0]) && !isNumber(arr[arrLength - 1])) {
+        return
+      } else if (isColor(arr[0]) && !isColor(arr[arrLength - 1])) {
         return
       }
-      this.updateData({pos, val: `[${val}]`})
+      this.updateData({pos, val: arr})
     },
     checkType (obj) {
       return checkType(obj)
     },
     arrayStringfiy (arr) {
-      return JSON.stringify(arr).slice(1, -1)
+      return arr.join('\n')
     },
     getDescFromKey (key) {
       return desc[key.replace(/\.\d/g, '')]

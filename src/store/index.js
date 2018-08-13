@@ -38,9 +38,7 @@ export default new Vuex.Store({
       commit('initData', type)
     },
     updateData ({commit}, {pos, val}) {
-      if (/^\[.*\]$/.test(val)) {
-        val = JSON.parse(val)
-      } else if (/true|false/.test(val)) {
+      if (/true|false/.test(val)) {
         val = val === 'true'
       }
       commit('updateData', {pos, val})

@@ -76,14 +76,18 @@ export default {
   }
   .input-wrapper {
     display: flex;
+    line-height: 30px;
     span {
-      width: 150px;
+      width: 120px;
       padding-right: 10px;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    input, select {
+    input, select, textarea {
       flex: 1;
+    }
+    textarea {
+      height: 60px;
     }
   }
   .tip-icon {
