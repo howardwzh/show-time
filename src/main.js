@@ -28,7 +28,7 @@ const router = new VueRouter({
     { path: '/css3', component: CSS3, meta: { title: 'css3展示' } },
     { path: '/vue', component: VUE, meta: { title: 'vue展示' } },
     { path: '/webp', component: WEBP, meta: { title: 'webp展示' } },
-    { path: '/chart', component: Chart, meta: { title: 'ChartJs展示' } },
+    { path: '/chart', component: Chart, meta: { title: 'ChartJS展示' } },
     { path: '*', component: NotFound }
   ]
 })

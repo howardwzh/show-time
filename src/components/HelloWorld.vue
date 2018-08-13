@@ -19,7 +19,7 @@
     </ul>
     <h3>视觉系</h3>
     <ul>
-      <li><a href="#/chart">ChartJs</a></li>
+      <li><a href="#/chart">ChartJS</a></li>
     </ul>
   </div>
 </template>
