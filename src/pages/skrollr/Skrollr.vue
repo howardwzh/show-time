@@ -44,11 +44,19 @@ export default {
 }
 </script>
 
-<style scoped lang="less">
+<style lang="less">
 .skrollr-filling-500 {
   height: 500px;
 }
 .skrollr-filling-1000 {
   height: 1000px;
+}
+#skrollr-body {
+  position: relative;
+  .skrollr-scene {
+    img {
+      width: 100%;
+    }
+  }
 }
 </style>

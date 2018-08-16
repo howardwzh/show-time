@@ -2,13 +2,13 @@ const data = {
   scenes: [{
     style: [],
     material: [{
-      style: [],
+      style: ['position: absolute'],
       start: '0',
-      startStyle: ['background-color:rgb(0,0,255)'],
+      startStyle: ['transform: translateY(0px)'],
       end: 'top',
-      endStyle: ['background-color:rgb(255,0,0)'],
-      tag: 'div',
-      tagConSrc: 'WOOOT'
+      endStyle: ['transform: translateY(300px)'],
+      tag: 'img',
+      tagConSrc: ''
     }]
   }]
 }
