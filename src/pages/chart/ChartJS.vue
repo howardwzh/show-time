@@ -31,11 +31,17 @@ export default {
         return beautify(stringifyPro(this.chartData))
       }
     },
-    ...mapState([
-      'type',
-      'chartData',
-      'chartDataChange'
-    ])
+    ...mapState({
+      type (state) {
+        return state.chart.type
+      },
+      chartData (state) {
+        return state.chart.chartData
+      },
+      chartDataChange (state) {
+        return state.chart.chartDataChange
+      }
+    })
   },
   components: {
     Chart,

@@ -1,55 +1,57 @@
 <template>
-  <div id="ChartConfig" class="chart-config">
-    <div class="form-render">
-      <label class="input-wrapper">
-        <span>type:</span>
-        <select @change="setChartType($event.target.value)">
-          <option v-for="item in types" :value="item" :key="item" :selected="item === currentType">{{item}}</option>
-        </select>
-      </label>
+  <div id="SkrollrConfig">
+    <div class="skrollr-config">
+      <SkrollrConfigFormRender :data.sync="skrollrData" root="skrollrData" />
     </div>
-    <ChartConfigFormRender :data.sync="chartData" root="chartData" />
+    <textarea class="skrollr-code" :value="skrollrHtmls" readonly></textarea>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import ChartConfigFormRender from './ChartConfigFormRender'
-import { types, desc } from './assets/data'
-
+import SkrollrConfigFormRender from './SkrollrConfigFormRender'
 export default {
-  name: 'ChartConfig',
+  name: 'SkrollrConfig',
   props: {
   },
   created () {
-    this.setChartType('line')
+    this['skrollr/initData']()
   },
   data () {
     return {
-      types: types,
-      currentType: ''
     }
   },
   components: {
-    ChartConfigFormRender
+    SkrollrConfigFormRender
   },
   computed: {
     ...mapState({
-      chartData (state) {
-        return state.chart.chartData
+      skrollrData (state) {
+        return state.skrollr.skrollrData
       }
-    })
+    }),
+    skrollrHtmls () {
+      const domArray = this.skrollrData.scenes.map((scene) => {
+        const materialArray = scene.material.map((m) => {
+          if (m.tag === 'img') {
+            return `<${m.tag} style="${m.style.join(';')}" data-${m.start}="${m.startStyle.join(';')}" data-${m.end}="${m.endStyle.join(';')}" src="${m.tagConSrc}" />`
+          } else {
+            return `<${m.tag} style="${m.style.join(';')}" data-${m.start}="${m.startStyle.join(';')}" data-${m.end}="${m.endStyle.join(';')}">${m.tagConSrc}</${m.tag}>`
+          }
+        })
+        return (
+          `<div class="skrollr-scene" style="${scene.style.join(';')}">\n${materialArray.join('\n')}\n</div>\n\n`
+        )
+      })
+      return domArray.join('')
+    }
   },
   methods: {
     ...mapActions([
-      'initData'
+      'skrollr/initData'
     ]),
-    setChartType (type) {
-      this.currentType = type
-      this.initData(type)
-    },
-    getDescFromKey (key) {
-      return desc[key.replace(/\.\d/g, '')]
+    getData () {
+      return this.skrollrHtmls
     }
   }
 }
@@ -80,7 +82,7 @@ export default {
     display: flex;
     line-height: 30px;
     span {
-      width: 120px;
+      width: 80px;
       padding-right: 10px;
       overflow: hidden;
       text-overflow: ellipsis;
