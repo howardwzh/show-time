@@ -34,9 +34,9 @@ export default {
       const domArray = this.skrollrData.scenes.map((scene) => {
         const materialArray = scene.material.map((m) => {
           if (m.tag === 'img') {
-            return `<${m.tag} style="${m.style.join(';')}" data-${m.start}="${m.startStyle.join(';')}" data-${m.end}="${m.endStyle.join(';')}" src="${m.tagConSrc}" />`
+            return `<${m.tag} style="${m.style.join(';')}" ${m.start}="${m.startStyle.join(';')}" ${m.end}="${m.endStyle.join(';')}" src="${m.tagConSrc}" />`
           } else {
-            return `<${m.tag} style="${m.style.join(';')}" data-${m.start}="${m.startStyle.join(';')}" data-${m.end}="${m.endStyle.join(';')}">${m.tagConSrc}</${m.tag}>`
+            return `<${m.tag} style="${m.style.join(';')}" ${m.start}="${m.startStyle.join(';')}" ${m.end}="${m.endStyle.join(';')}">${m.tagConSrc}</${m.tag}>`
           }
         })
         return (

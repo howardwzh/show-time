@@ -34,7 +34,7 @@
 <script>
 import { mapActions } from 'vuex'
 import checkType from '../../assets/utils/checkType.js'
-// import { desc } from './assets/data'
+import { desc } from './assets/data'
 import { isNumber, isColor } from './assets/validate'
 import ToggleShow from '../../components/ToggleShow'
 // 因为变量路径不能直接require进来，所以采用require.context
@@ -82,8 +82,8 @@ export default {
     arrayStringfiy(arr) {
       return arr.join('\n')
     },
-    getDescFromKey() {
-      return ''
+    getDescFromKey (key) {
+      return desc[key.replace(/\.\d/g, '')]
     },
     formRenderClickHandle(e) {
       const className = e.target.className

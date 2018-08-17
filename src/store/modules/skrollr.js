@@ -1,7 +1,7 @@
 import _cloneDeep from 'lodash/cloneDeep'
 import _set from 'lodash/set'
 import _get from 'lodash/get'
-import data from '../../pages/skrollr/assets/data'
+import {data} from '../../pages/skrollr/assets/data/'
 
 const skrollr = {
   state: {

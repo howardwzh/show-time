@@ -1,7 +1,8 @@
 <template>
   <div id="skrollr-body">
-    <div class="skrollr-filling-500"></div>
+    <div class="skrollr-filling-1000"></div>
     <div v-html="skrollrData"></div>
+    <div class="skrollr-filling-1000"></div>
     <div class="skrollr-filling-1000"></div>
   </div>
 </template>

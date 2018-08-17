@@ -3,9 +3,9 @@ const data = {
     style: [],
     material: [{
       style: ['position: absolute'],
-      start: '0',
+      start: 'data-0',
       startStyle: ['transform: translateY(0px)'],
-      end: 'top',
+      end: 'data-top',
       endStyle: ['transform: translateY(300px)'],
       tag: 'img',
       tagConSrc: ''
