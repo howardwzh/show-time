@@ -1,6 +1,9 @@
 <template>
   <div class="toggle-show">
-    <button v-if="this.shouldToggle" @click="toggleHandle()">{{toggleShow ? '收起' : '展开'}}</button>
+    <div class="toggle-show-btns">
+      <button v-if="this.shouldToggle" @click="toggleHandle()">{{toggleShow ? '收起' : '展开'}}</button>
+      <slot name="btns"></slot>
+    </div>
     <div v-show="toggleShow">
       <slot></slot>
     </div>
@@ -29,7 +32,7 @@ export default {
 <style scoped lang="less">
 .toggle-show {
   position: relative;
-  button {
+  &-btns {
     position: absolute;
     top: -22px;
     right: -1px;

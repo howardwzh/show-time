@@ -10,7 +10,8 @@ const skrollr = {
   },
   mutations: {
     'skrollr/initData' (state) {
-      state.skrollrData = _cloneDeep(data)
+      const dataFromCache = localStorage.getItem('skrollrData')
+      state.skrollrData = dataFromCache ? JSON.parse(dataFromCache) : _cloneDeep(data)
       state.skrollrDataChange = 1 + state.skrollrDataChange % 2
     },
     'skrollr/updateData' (state, {pos, val}) {

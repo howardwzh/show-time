@@ -11,6 +11,9 @@
             <label>{{key}}: </label>
             <ToggleShow :shouldToggle="checkType(data) === 'array'" >
               <ChartConfigFormRender :data.sync="val" :root="`${root}.${key}`" />
+              <template slot="btns">
+                <button @click="deleteHandle(`${root}.${key}`)">删除</button>
+              </template>
             </ToggleShow>
           </div>
         </div>
@@ -95,6 +98,10 @@ export default {
     updateImgSrcHandle (pos, e) {
       const imgName = e.target.value.match(/[^\\/]+$/)[0]
       this['skrollr/updateData']({ pos, val: images(`./${imgName}`) })
+    },
+    deleteHandle (pos) {
+      const res = confirm(pos)
+      console.log(res)
     }
   }
 }

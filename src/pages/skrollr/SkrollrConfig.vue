@@ -51,6 +51,7 @@ export default {
       'skrollr/initData'
     ]),
     getData () {
+      localStorage.setItem('skrollrData', JSON.stringify(this.skrollrData))
       return this.skrollrHtmls
     }
   }
