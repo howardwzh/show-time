@@ -28,6 +28,13 @@ const skrollr = {
       const originArray = _get(state, level)
       originArray.push(_get(tempState, tempLevel)[0])
       state.skrollrDataChange = 1 + state.skrollrDataChange % 2
+    },
+    'skrollr/deleteData' (state, {pos}) {
+      const level = pos.split('.')
+      const index = level.pop()
+      const originArray = _get(state, level)
+      originArray.splice(index, 1)
+      state.skrollrDataChange = 1 + state.skrollrDataChange % 2
     }
   },
   actions: {
@@ -42,6 +49,9 @@ const skrollr = {
     },
     'skrollr/addData' ({commit}, {pos}) {
       commit('skrollr/addData', {pos})
+    },
+    'skrollr/deleteData' ({commit}, {pos}) {
+      commit('skrollr/deleteData', {pos})
     }
   }
 }

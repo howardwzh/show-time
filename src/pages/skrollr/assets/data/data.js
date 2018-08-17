@@ -3,10 +3,10 @@ const data = {
     style: [],
     material: [{
       style: ['position: absolute'],
-      start: 'data-0',
-      startStyle: ['transform: translateY(0px)'],
-      end: 'data-top',
-      endStyle: ['transform: translateY(300px)'],
+      start: 'data-bottom-top',
+      startStyle: ['transform: rotate(0deg)'],
+      end: 'data-top-bottom',
+      endStyle: ['transform: rotate(360deg)'],
       tag: 'img',
       tagConSrc: ''
     }]

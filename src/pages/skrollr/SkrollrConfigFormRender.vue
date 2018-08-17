@@ -11,7 +11,7 @@
             <label>{{key}}: </label>
             <ToggleShow :shouldToggle="checkType(data) === 'array'" >
               <ChartConfigFormRender :data.sync="val" :root="`${root}.${key}`" />
-              <template slot="btns">
+              <template slot="btns" v-if="key !== 0">
                 <button @click="deleteHandle(`${root}.${key}`)">删除</button>
               </template>
             </ToggleShow>
@@ -60,7 +60,7 @@ export default {
     ToggleShow
   },
   methods: {
-    ...mapActions(['skrollr/updateData', 'skrollr/addData']),
+    ...mapActions(['skrollr/updateData', 'skrollr/addData', 'skrollr/deleteData']),
     addData(pos) {
       this['skrollr/addData']({ pos })
     },
@@ -100,8 +100,10 @@ export default {
       this['skrollr/updateData']({ pos, val: images(`./${imgName}`) })
     },
     deleteHandle (pos) {
-      const res = confirm(pos)
-      console.log(res)
+      const res = confirm('确认删除配置吗？')
+      if (res) {
+        this['skrollr/deleteData']({pos})
+      }
     }
   }
 }
