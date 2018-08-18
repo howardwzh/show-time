@@ -9,19 +9,21 @@
         <div v-else-if="checkType(val) === 'object'">
           <div>
             <label>{{key}}: </label>
-            <ToggleShow :shouldToggle="checkType(data) === 'array'" >
-              <ChartConfigFormRender :data.sync="val" :root="`${root}.${key}`" />
-              <template slot="btns" v-if="key !== 0">
+            <ToggleShow :shouldToggle="checkType(data) === 'array' && !data[0].pos" >
+              <template slot="btns" v-if="data.length !== 1">
                 <button @click="deleteHandle(`${root}.${key}`)">删除</button>
               </template>
+              <ChartConfigFormRender :data.sync="val" :root="`${root}.${key}`" />
             </ToggleShow>
           </div>
         </div>
         <div v-else-if="checkType(val) === 'array' && !(/object|array/).test(checkType(val[0]))">
           <label class="input-wrapper"><span>{{key}}: </span> [<textarea type="text" :value="arrayStringfiy(val)" @keyup="updateArrayDataHandle(`${root}.${key}`, $event)"></textarea>]</label>
+          <StyleCheck v-if="data.pos" :pos="`${root}.${key}`" :styleData.sync="val" />
         </div>
         <div v-else-if="checkType(val) === 'array' && (/object|array/).test(checkType(val[0]))">  
-          <label>{{key}}: </label><button @click="addData(`${root}.${key}`)">+</button>
+          <label>{{key}}: </label>
+          <button @click="addData(`${root}.${key}`)">+</button>
           <ChartConfigFormRender :data.sync="val" :root="`${root}.${key}`" />
         </div>
         <!-- 属性描述 -->
@@ -40,6 +42,7 @@ import checkType from '../../assets/utils/checkType.js'
 import { desc } from './assets/data'
 import { isNumber, isColor } from './assets/validate'
 import ToggleShow from '../../components/ToggleShow'
+import StyleCheck from './StyleCheck'
 // 因为变量路径不能直接require进来，所以采用require.context
 // 缺点是：如果images里有冗余图片，webpack也会打包进来
 const images = require.context('./assets/images', true, /\.webp|jpg|png|gif$/)
@@ -57,10 +60,15 @@ export default {
     }
   },
   components: {
-    ToggleShow
+    ToggleShow,
+    StyleCheck
   },
   methods: {
-    ...mapActions(['skrollr/updateData', 'skrollr/addData', 'skrollr/deleteData']),
+    ...mapActions([
+      'skrollr/updateData',
+      'skrollr/addData',
+      'skrollr/deleteData'
+    ]),
     addData(pos) {
       this['skrollr/addData']({ pos })
     },

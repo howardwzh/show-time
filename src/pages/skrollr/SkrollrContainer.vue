@@ -3,8 +3,8 @@
     <div class="skrollr-dashboard">
       <div class="skrollr-dashboard-config" :class="{'hide': !toggleShow}">
         <div class="config-btns">
-          <button class="config-btns-toggle" @click="toggleHandle()">toggle</button>
-          <button class="config-btns-changeData" @click="changeData()">changeData</button>
+          <button class="config-btns-toggle" @click="toggleHandle()">{{toggleShow ? '收起' : '展开'}}</button>
+          <button class="config-btns-changeData" @click="changeData()">执行</button>
         </div>
         <SkrollrConfig ref="skConfig" />
       </div>
