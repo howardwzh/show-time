@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div @click.self="formRenderClickHandle($event)" class="form-render" :class="{'tip-icon': getDescFromKey(`${root}.${key}`)}" v-for="(val, key) in data" :key="key">
+    <div @click.self="formRenderClickHandle($event)" class="form-render" :class="{'tip-icon': getDescFromKey(`${root}.${key}`)}" v-for="(val, key) in adaptData(data)" :key="key">
         <div v-if="!(/array|object/).test(checkType(val))">
           <label class="input-wrapper"><span>{{key}}: </span>
           <input type="text" :value="checkType(val) === 'function' ? 'function' : val" :disabled="checkType(val) === 'function'" @keyup="updateDataHandle(`${root}.${key}`, $event)"/></label>  
@@ -13,18 +13,19 @@
               <template slot="btns" v-if="data.length !== 1">
                 <button @click="deleteHandle(`${root}.${key}`)">删除</button>
               </template>
-              <ChartConfigFormRender :data.sync="val" :root="`${root}.${key}`" />
+              <SkrollrConfigFormRender :data.sync="val" :root="`${root}.${key}`" />
             </ToggleShow>
           </div>
         </div>
         <div v-else-if="checkType(val) === 'array' && !(/object|array/).test(checkType(val[0]))">
-          <label class="input-wrapper"><span>{{key}}: </span> [<textarea type="text" :value="arrayStringfiy(val)" @keyup="updateArrayDataHandle(`${root}.${key}`, $event)"></textarea>]</label>
-          <StyleCheck v-if="data.pos" :pos="`${root}.${key}`" :styleData.sync="val" />
+          <label v-if="!data.SStyle" class="input-wrapper"><span>{{key}}: </span> [<textarea type="text" :value="arrayStringfiy(val)" @keyup="updateArrayDataHandle(`${root}.${key}`, $event)"></textarea>]</label>
+          <label v-else class="input-wrapper"><span>{{key}}: </span> [<textarea type="text" :value="arrayStringfiy(val)" @keyup="updateSStyleDataHandle(`${root}.${key}`, $event)"></textarea>]</label>
+          <StyleCheck v-if="data.SStyle" :pos="`${root}.${key}`" :styleData.sync="data[key]" />
         </div>
         <div v-else-if="checkType(val) === 'array' && (/object|array/).test(checkType(val[0]))">  
           <label>{{key}}: </label>
           <button @click="addData(`${root}.${key}`)">+</button>
-          <ChartConfigFormRender :data.sync="val" :root="`${root}.${key}`" />
+          <SkrollrConfigFormRender :data.sync="val" :root="`${root}.${key}`" />
         </div>
         <!-- 属性描述 -->
         <div class="item-desc" v-if="getDescFromKey(`${root}.${key}`)">
@@ -38,8 +39,9 @@
 
 <script>
 import { mapActions } from 'vuex'
+import _cloneDeep from 'lodash/cloneDeep'
 import checkType from '../../assets/utils/checkType.js'
-import { desc } from './assets/data'
+import { desc, style } from './assets/data'
 import { isNumber, isColor } from './assets/validate'
 import ToggleShow from '../../components/ToggleShow'
 import StyleCheck from './StyleCheck'
@@ -48,7 +50,7 @@ import StyleCheck from './StyleCheck'
 const images = require.context('./assets/images', true, /\.webp|jpg|png|gif$/)
 
 export default {
-  name: 'ChartConfigFormRender',
+  name: 'SkrollrConfigFormRender',
   props: {
     data: Array | Object,
     root: String
@@ -63,11 +65,14 @@ export default {
     ToggleShow,
     StyleCheck
   },
+  computed: {
+  },
   methods: {
     ...mapActions([
       'skrollr/updateData',
       'skrollr/addData',
-      'skrollr/deleteData'
+      'skrollr/deleteData',
+      'skrollr/updateSStyleData'
     ]),
     addData(pos) {
       this['skrollr/addData']({ pos })
@@ -86,6 +91,11 @@ export default {
         return
       }
       this['skrollr/updateData']({ pos, val: arr })
+    },
+    updateSStyleDataHandle(pos, e) {
+      const str = e.target.value
+      const arr = str.split('\n')
+      this['skrollr/updateSStyleData']({ pos, val: arr })
     },
     checkType(obj) {
       return checkType(obj)
@@ -112,6 +122,14 @@ export default {
       if (res) {
         this['skrollr/deleteData']({pos})
       }
+    },
+    adaptData (val) {
+      let data = val
+      if (data.SStyle) {
+        data = _cloneDeep(val)
+        data.SStyle = style.getSStyleArray(data.SStyle)
+      }
+      return data
     }
   }
 }

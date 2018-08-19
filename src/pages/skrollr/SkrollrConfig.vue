@@ -3,12 +3,13 @@
     <div class="skrollr-config">
       <SkrollrConfigFormRender :data.sync="skrollrData" root="skrollrData" />
     </div>
-    <textarea class="skrollr-code" :value="skrollrHtmls" readonly></textarea>
+    <textarea class="skrollr-code" :value="skrollrHtml" readonly></textarea>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import { style } from './assets/data'
 import SkrollrConfigFormRender from './SkrollrConfigFormRender'
 export default {
   name: 'SkrollrConfig',
@@ -30,16 +31,17 @@ export default {
         return state.skrollr.skrollrData
       }
     }),
-    skrollrHtmls () {
+    skrollrHtml () {
       const domArray = this.skrollrData.scenes.map((scene) => {
         const materialArray = scene.material.map((m) => {
-          const picturesPosStyle = m.pictures.map((p) => {
-            return `${p.pos}="${p.style.join(';')}"`
+          const picturesPosSStyle = m.pictures.map((p) => {
+            const SStyleArray = style.getSStyleArray(p.SStyle)
+            return `${p.pos}="${SStyleArray.join(';')}"`
           })
           if (m.tag === 'img') {
-            return `<${m.tag} style="${m.style.join(';')}" ${picturesPosStyle.join(' ')} src="${m.tagConSrc}" />`
+            return `<${m.tag} style="${m.style.join(';')}" ${picturesPosSStyle.join(' ')} src="${m.tagConSrc}" />`
           } else {
-            return `<${m.tag} style="${m.style.join(';')}" ${picturesPosStyle.join(' ')}>${m.tagConSrc}</${m.tag}>`
+            return `<${m.tag} style="${m.style.join(';')}" ${picturesPosSStyle.join(' ')}>${m.tagConSrc}</${m.tag}>`
           }
         })
         return (
@@ -53,9 +55,9 @@ export default {
     ...mapActions([
       'skrollr/initData'
     ]),
-    getData () {
+    getSkrollrHtml () {
       localStorage.setItem('skrollrData', JSON.stringify(this.skrollrData))
-      return this.skrollrHtmls
+      return this.skrollrHtml
     }
   }
 }

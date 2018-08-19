@@ -1,17 +1,19 @@
+import style from './style'
+
 const data = {
   scenes: [{
     style: [],
     material: [{
       tag: 'img',
       tagConSrc: '',
-      style: ['position: absolute'],
+      style: ['position:absolute'],
       pictures: [
         {
           pos: 'data-bottom-bottom',
-          style: ['transform: rotate(0deg)']
+          SStyle: style.init()
         }, {
           pos: 'data-top-top',
-          style: ['transform: rotate(0deg)']
+          SStyle: style.init()
         }
       ]
     }]

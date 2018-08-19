@@ -1,7 +1,7 @@
 <template>
   <div id="skrollr-body">
     <div class="skrollr-filling-1000"></div>
-    <div v-html="skrollrData"></div>
+    <div v-html="skrollrHtml"></div>
     <div class="skrollr-filling-1000"></div>
     <div class="skrollr-filling-1000"></div>
   </div>
@@ -13,7 +13,7 @@ import skrollr from 'skrollr'
 export default {
   name: 'Skrollr',
   props: {
-    skrollrData: String
+    skrollrHtml: String
   },
   mounted () {
     this.createSkrollr()
@@ -34,7 +34,7 @@ export default {
     }
   },
   watch: {
-    skrollrData: function () {
+    skrollrHtml: function () {
       if (this.mySkrollr) {
         this.refreshSkrollr()
       } else {
