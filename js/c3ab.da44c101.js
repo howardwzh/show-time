@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["c3ab"],{c3ab:function(n,t,o){"use strict";o.r(t);var u=function(){var n=this,t=n.$createElement,o=n._self._c||t;return o("Group",[o("button",{on:{click:n.addCount}},[n._v("加1")]),o("p",[n._v(n._s(n.count))])])},e=[],c={name:"ComponentC",data:function(){return{count:0}},methods:{addCount:function(){this.count+=1}}},a=c,i=o("2877"),s=Object(i["a"])(a,u,e,!1,null,null,null);s.options.__file="ComponentC.vue";t["default"]=s.exports}}]);
+//# sourceMappingURL=c3ab.da44c101.js.map
