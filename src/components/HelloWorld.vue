@@ -20,7 +20,7 @@
     <h3>视觉系</h3>
     <ul>
       <li><a href="#/chart">ChartJS</a></li>
-      <li><a href="#/skrollr">Skrollr</a></li>
+      <li><a href="https://howardwzh.gitlab.io/page-painter">Skrollr</a></li>
     </ul>
   </div>
 </template>
