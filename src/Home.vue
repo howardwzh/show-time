@@ -1,7 +1,7 @@
 <template>
   <div id="App">
     <span class="icon-wzh logo"></span>
-    <HelloWorld msg="Welcome to Show Time"/>
+    <HelloWorld msg="Welcome to Show Time 2.0"/>
   </div>
 </template>
 
