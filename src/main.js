@@ -13,6 +13,7 @@ import VUE from './pages/vue/Index.vue'
 import WEBP from './pages/webp/Index.vue'
 import Chart from './pages/chart/Index.vue'
 import Skrollr from './pages/skrollr/Index.vue'
+import Hope from './pages/hope/Index.vue'
 
 Vue.config.productionTip = false
 
@@ -31,6 +32,7 @@ const router = new VueRouter({
     { path: '/webp', component: WEBP, meta: { title: 'webp展示' } },
     { path: '/chart', component: Chart, meta: { title: 'ChartJS展示' } },
     { path: '/skrollr', component: Skrollr, meta: { title: 'Skrollr展示' } },
+    { path: '/hope', component: Hope, meta: { title: 'Hope' } },
     { path: '*', component: NotFound }
   ]
 })
