@@ -1,6 +1,7 @@
 <template>
-  <div id="Wood">
-    <div class="group wood-group">
+  <div id="Wood" class="wood">
+    <div class="wood-form" :class="{'wood-form-disabled': showResult}">
+      <div class="group wood-group">
       <wo-input label="木托长度limitX" type="number" v-model="wood.limitX.max"/>
       <wo-input label="木托宽度limitY" type="number" v-model="wood.limitY.max"/>
       <wo-input label="木托高度limitZ" type="number" v-model="wood.limitZ.max"/>
@@ -11,8 +12,9 @@
     <wo-input label="箱子宽度valueY" type="number" v-model="box.valueY"/>
     <wo-input label="箱子高度valueZ" type="number" v-model="box.valueZ"/>
     </div>
-    <button class="wo-button" @click="count">计算</button>
-    <ul class="result-list">
+    </div>
+    <button class="wo-button" @click="count">{{showResult ? '重新输入' : '开始计算'}}</button>
+    <ul class="result-list" v-if="showResult">
       <li v-for="(val, key) in resultObj" :key="key">
         <span class="item" v-for="(valK, index) in key.replace('init,', '').split(',')" :key="valK">
           {{`${box[valK.split('÷')[1]]} x ${val.plan[index]} + ${wood[valK.split('÷')[0]].offset} = ${(box[valK.split('÷')[1]]*val.plan[index]*10000+wood[valK.split('÷')[0]].offset*10000)/10000} &lt; ${wood[valK.split('÷')[0]].max}`}}<br/>
@@ -30,6 +32,7 @@ export default {
   name: 'Wood',
   data () {
     return {
+      showResult: false,
       wood: {
         limitX: {
           max: 1.5,
@@ -60,7 +63,10 @@ export default {
   },
   methods: {
     count () {
-      this.resultObj = hope.getEveryPossible(this.wood, this.box)
+      this.showResult = !this.showResult
+      if (this.showResult) {
+        this.resultObj = hope.getEveryPossible(this.wood, this.box)
+      }
     },
     getResultAndRemainder (dividend, divisor) {
       return hope.getResultAndRemainder(dividend, divisor)
@@ -70,6 +76,18 @@ export default {
 </script>
 
 <style lang="less">
+.wood-form {
+  position: relative;
+  &-disabled::after {
+    content: ' ';
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: rgba(255,255,255,.7);
+  }
+}
 .wo-button {
   width: 100%;
   height: 36px;
