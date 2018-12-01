@@ -4,7 +4,8 @@
       <span :style="{backgroundImage: `url('${icon}')`}"></span>
     </i>
     <span class="wo-input-label" v-if="label">{{label}}</span>
-    <input class="wo-input-area" :type="type" @keyup="handleKeyup" v-model="val" :readonly="readonly" :name="name" :placeholder="placeholder" />
+    <input class="wo-input-unit" v-if="/checkbox|radio/.test(type)" :type="type" @change="handleChange" v-model="val" :readonly="readonly" :name="name" :placeholder="placeholder" />
+    <input class="wo-input-area" v-else :type="type" @keyup="handleKeyup" v-model="val" :readonly="readonly" :name="name" :placeholder="placeholder" />
     <slot></slot>
   </label>
 </template>
@@ -48,6 +49,9 @@ export default {
         this.val = val.slice(0, this.maxLength);
       }
       this.$emit("input", val);
+    },
+    handleChange() {
+      this.$emit("input", this.val);
     }
   }
 };

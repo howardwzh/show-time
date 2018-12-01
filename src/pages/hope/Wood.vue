@@ -2,31 +2,31 @@
   <div id="Wood" class="wood">
     <div class="wood-form" :class="{'wood-form-disabled': showResult}">
       <div class="group wood-group">
-      <wo-input label="木托长度limitX" type="number" v-model="wood.limitX.max"/>
-      <wo-input label="木托宽度limitY" type="number" v-model="wood.limitY.max"/>
-      <wo-input label="木托高度limitZ" type="number" v-model="wood.limitZ.max"/>
+      <wo-input label="木托长度限制" type="number" v-model="wood.limitX.max"/>
+      <wo-input label="木托宽度限制" type="number" v-model="wood.limitY.max"/>
+      <wo-input label="木托高度限制" type="number" v-model="wood.limitZ.max"/>
     </div>
     <div class="group box-group">
     <wo-input label="箱子数量boxTotle" type="number" v-model="boxTotle"/>
-    <wo-input label="箱子长度valueX" type="number" v-model="box.valueX"/>
-    <wo-input label="箱子宽度valueY" type="number" v-model="box.valueY"/>
-    <wo-input label="箱子高度valueZ" type="number" v-model="box.valueZ"/>
+    <wo-input label="箱子长度" type="number" v-model="box.valueX"/>
+    <wo-input label="箱子宽度" type="number" v-model="box.valueY"/>
+    <wo-input label="箱子高度" type="number" v-model="box.valueZ"/>
     </div>
     </div>
     <button class="wo-button" @click="count">{{showResult ? '重新输入' : '开始计算'}}</button>
-    <ul class="result-list" v-if="showResult">
-      <li v-for="(val, key) in resultObj" :key="key">
-        <span class="item" v-for="(valK, index) in key.replace('init,', '').split(',')" :key="valK">
-          {{`${box[valK.split('÷')[1]]} x ${val.plan[index]} + ${wood[valK.split('÷')[0]].offset} = ${(box[valK.split('÷')[1]]*val.plan[index]*10000+wood[valK.split('÷')[0]].offset*10000)/10000} &lt; ${wood[valK.split('÷')[0]].max}`}}<br/>
-        </span>
-        <span class="totle">{{`${boxTotle} ÷ ${val.number} = ${getResultAndRemainder(boxTotle, val.number).result} (remainder: ${getResultAndRemainder(boxTotle, val.number).remainder})`}}</span>
-      </li>
-    </ul>
+    <HopeResultList
+      :showResult="showResult"
+      :resultObj="resultObj"
+      :wood="wood"
+      :box="box"
+      :boxTotle="boxTotle"
+    />
   </div>
 </template>
 
 <script>
 import WoInput from '../../components/WoInput'
+import HopeResultList from '../../components/HopeResultList'
 import * as hope from '../../assets/utils/hope'
 export default {
   name: 'Wood',
@@ -59,7 +59,8 @@ export default {
   created () {
   },
   components: {
-    WoInput
+    WoInput,
+    HopeResultList
   },
   methods: {
     count () {
@@ -99,19 +100,6 @@ export default {
   color: #fff;
   border: none;
 }
-.result-list {
-  list-style: none;
-  font-size: 14px;
-  padding: 0;
-  li {
-    margin: 20px 0;
-    .item {
 
-    }
-    .totle {
-      color: #0099cc;
-    }
-  }
-}
 </style>
 
