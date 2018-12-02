@@ -7,8 +7,8 @@
       <span class="totle" v-html="makeRemainderString(val)"></span>
       <div class="result-list-remainder-box" v-if="getResultAndRemainder(boxTotle, val.number).remainder > 0">
         <div class="result-list-remainder-box-form">
-          <WoInput class="checkbox" label="是否长度优先" type="checkbox" v-model="allIsXFirst[key]"/>
-          <WoInput class="input" label="剩余箱子的木托长度限制" type="number" v-model="allRemainderLimitXMax[key]"/>
+          <WoInput class="radio" default="1" label="附加限制项" @change.native="handleSwitchRadio(key)" :radioItems="radioItems" type="radio" v-model="allItemFirst[key]"/>
+          <WoInput class="input" :readonly="allItemFirst[key] === '1'" label="新高度限制" type="number" v-model="allRemainderLimitZMax[key]"/>
         </div>
         <HopeResultList
           :showResult="true"
@@ -27,6 +27,13 @@ import _cloneDeep from 'lodash/cloneDeep'
 import _map from 'lodash/map'
 import WoInput from './WoInput'
 import * as hope from '../assets/utils/hope'
+const radioItems = [{
+  value: '1',
+  label: '长度优先'
+}, {
+  value: '2',
+  label: '高度优先'
+}]
 export default {
   name: 'HopeResultList',
   props: {
@@ -38,9 +45,10 @@ export default {
   },
   data () {
     return {
+      radioItems,
       allNewWood: {},
-      allIsXFirst: {},
-      allRemainderLimitXMax: {},
+      allItemFirst: {},
+      allRemainderLimitZMax: {},
       getResultAndRemainder: hope.getResultAndRemainder
     }
   },
@@ -58,8 +66,13 @@ export default {
     }
   },
   methods: {
+    handleSwitchRadio (key) {
+      if (this.allItemFirst[key] === '1') {
+        this.allRemainderLimitZMax[key] = ''
+      }
+    },
     getPlanToPutRemainder (remainder, val, key) {
-      return hope.getPlanToPutRemainder(remainder, this.allNewWood[key], this.box, val, key, this.allIsXFirst[key], this.allRemainderLimitXMax[key])
+      return hope.getPlanToPutRemainder(remainder, this.allNewWood[key], this.box, val, key, this.allItemFirst[key], this.allRemainderLimitZMax[key])
     },
     makePlanString (val, valK, index) {
       const valKArray = valK.split('÷')

@@ -85,17 +85,17 @@ function deleteRedundantItem (obj, number) {
  * @param {Object} val 
  * @param {String} key 
  * @param {Boolean} isXFirst 
- * @param {Number} remainderLimitXMax 
+ * @param {Number} remainderLimitZMax 
  */
-export function getPlanToPutRemainder(remainder, wood, box, val, key, isXFirst, remainderLimitXMax) {
+export function getPlanToPutRemainder(remainder, wood, box, val, key, itemFirst = '1', remainderLimitZMax) {
     let {valX, valZ} = {}
     const valY = val.plan[1]
     const valXZ = Math.ceil(NP.divide(remainder, valY))
     const planArray = key.split(',')
     
-    wood.limitX.max = remainderLimitXMax || wood.limitX.max 
+    wood.limitZ.max = Number(remainderLimitZMax || wood.limitZ.max)
 
-    if (isXFirst) {
+    if (itemFirst === '1') {
         valX = Math.min(getMaxResult(wood.limitX, box[planArray[0].split('÷')[1]]), valXZ)
         valZ = Math.ceil(NP.divide(valXZ, valX))
     } else {

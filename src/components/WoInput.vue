@@ -1,11 +1,15 @@
 <template>
-  <label class="wo-input">
+  <label :for="/radio/.test(type) && 'blank'" class="wo-input">
     <i class="wo-input-icon" v-if="icon">
       <span :style="{backgroundImage: `url('${icon}')`}"></span>
     </i>
     <span class="wo-input-label" v-if="label">{{label}}</span>
-    <input class="wo-input-unit" v-if="/checkbox|radio/.test(type)" :type="type" @change="handleChange" v-model="val" :readonly="readonly" :name="name" :placeholder="placeholder" />
-    <input class="wo-input-area" v-else :type="type" @keyup="handleKeyup" v-model="val" :readonly="readonly" :name="name" :placeholder="placeholder" />
+    <input class="wo-input-unit" v-if="/checkbox/.test(type)" :type="type" @change="handleChange" v-model="val" :readonly="readonly" :name="name" :placeholder="placeholder" />
+    <label v-if="/radio/.test(type)" v-for="item in radioItems" :key="item.value">
+      <input class="wo-input-unit" :type="type" @change="handleChange" :value="item.value" v-model="val" :readonly="readonly" :name="name" :placeholder="placeholder" />
+      <span class="wo-input-label-radio">{{item.label}}</span>
+    </label>
+    <input class="wo-input-area" v-if="!/radio|checkbox/.test(type)" :type="type" @keyup="handleKeyup" v-model="val" :readonly="readonly" :name="name" :placeholder="placeholder" />
     <slot></slot>
   </label>
 </template>
@@ -32,12 +36,25 @@ export default {
       type: Number
     },
     value: String | Number,
-    readonly: String
+    readonly: String | Boolean,
+    radioItems: Array,
+    default: String | Number
   },
   data() {
     return {
       val: this.value
-    };
+    }
+  },
+  mounted () {
+    if (this.type === 'radio' && this.default) {
+      this.val = this.default
+      this.handleChange()
+    }
+  },
+  watch: {
+    value: function (val) {
+      this.val = val
+    }
   },
   methods: {
     handleKeyup() {
