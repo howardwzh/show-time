@@ -7,9 +7,8 @@
     <li v-for="(val, key) in resultObj" :key="key">
       <span class="item" v-for="(valK, index) in key.split(',')" :key="valK" v-html="makePlanString(val, valK, index, key, remainderLimitZMax)" />
       <span class="totle" v-html="makeRemainderString(val)"></span>
-      <div class="result-list-remainder-box"> 
+      <div class="result-list-remainder-box" v-if="getResultAndRemainder(boxTotle, val.number).remainder > 0"> 
         <HopeResultList
-          v-if="getResultAndRemainder(boxTotle, val.number).remainder > 0"
           type="remainder"
           :wood="wood"
           :box="box"
