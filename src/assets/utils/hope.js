@@ -92,14 +92,14 @@ export function getPlanToPutRemainder(remainder, wood, box, val, key, itemFirst 
     const valY = val.plan[1]
     const valXZ = Math.ceil(NP.divide(remainder, valY))
     const planArray = key.split(',')
-    
-    wood.limitZ.max = Number(remainderLimitZMax || wood.limitZ.max)
+    const newWood = _cloneDeep(wood)
+    newWood.limitZ.max = Number(remainderLimitZMax || newWood.limitZ.max)
 
     if (itemFirst === '1') {
-        valX = Math.min(getMaxResult(wood.limitX, box[planArray[0].split('÷')[1]]), valXZ)
+        valX = Math.min(getMaxResult(newWood.limitX, box[planArray[0].split('÷')[1]]), valXZ)
         valZ = Math.ceil(NP.divide(valXZ, valX))
     } else {
-        valZ = Math.min(getMaxResult(wood.limitZ, box[planArray[2].split('÷')[1]]), valXZ)
+        valZ = Math.min(getMaxResult(newWood.limitZ, box[planArray[2].split('÷')[1]]), valXZ)
         valX = Math.ceil(NP.divide(valXZ, valZ))
     }
     

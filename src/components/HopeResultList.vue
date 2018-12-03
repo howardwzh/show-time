@@ -1,21 +1,21 @@
 <template>
-  <ul class="result-list" v-if="showResult">
+  <ul class="result-list">
+    <div class="result-list-remainder-box-form" v-if="type === 'remainder'">
+      <WoInput class="radio" default="1" label="附加限制项" :radioItems="radioItems" type="radio" v-model="itemFirst"/>
+      <WoInput class="input" :readonly="itemFirst === '1'" label="新高度限制" type="number" v-model="remainderLimitZMax"/>
+    </div>
     <li v-for="(val, key) in resultObj" :key="key">
-      <span class="item" v-for="(valK, index) in key.split(',')" :key="valK" v-html="makePlanString(val, valK, index)">
- 
-      </span>
+      <span class="item" v-for="(valK, index) in key.split(',')" :key="valK" v-html="makePlanString(val, valK, index, key, remainderLimitZMax)" />
       <span class="totle" v-html="makeRemainderString(val)"></span>
-      <div class="result-list-remainder-box" v-if="getResultAndRemainder(boxTotle, val.number).remainder > 0">
-        <div class="result-list-remainder-box-form">
-          <WoInput class="radio" default="1" label="附加限制项" @change.native="handleSwitchRadio(key)" :radioItems="radioItems" type="radio" v-model="allItemFirst[key]"/>
-          <WoInput class="input" :readonly="allItemFirst[key] === '1'" label="新高度限制" type="number" v-model="allRemainderLimitZMax[key]"/>
-        </div>
+      <div class="result-list-remainder-box"> 
         <HopeResultList
-          :showResult="true"
-          :resultObj="getPlanToPutRemainder(getResultAndRemainder(boxTotle, val.number).remainder,val, key)"
-          :wood="allNewWood[key]"
+          v-if="getResultAndRemainder(boxTotle, val.number).remainder > 0"
+          type="remainder"
+          :wood="wood"
           :box="box"
           :boxTotle="getResultAndRemainder(boxTotle, val.number).remainder"
+          :totleVal="val"
+          :totleKey="key"
         />
       </div>
     </li>
@@ -23,8 +23,6 @@
 </template>
 
 <script>
-import _cloneDeep from 'lodash/cloneDeep'
-import _map from 'lodash/map'
 import WoInput from './WoInput'
 import * as hope from '../assets/utils/hope'
 const radioItems = [{
@@ -37,46 +35,56 @@ const radioItems = [{
 export default {
   name: 'HopeResultList',
   props: {
-    showResult: Boolean,
-    resultObj: Object,
     wood: Object,
     box: Object,
-    boxTotle: Number
+    boxTotle: Number,
+    type: String,
+    totleVal: Object,
+    totleKey: String
   },
   data () {
     return {
+      resultObj: {},
       radioItems,
       allNewWood: {},
-      allItemFirst: {},
-      allRemainderLimitZMax: {},
+      itemFirst: '1',
+      remainderLimitZMax: null,
       getResultAndRemainder: hope.getResultAndRemainder
     }
   },
   components: {
     WoInput
   },
+  mounted () {
+    setTimeout(this.getResultObj, 200)
+  },
   watch: {
-    resultObj: {
-      handler: function () {
-        _map(this.resultObj, (val, key) => {
-          this.allNewWood[key] = _cloneDeep(this.wood)
-        })
-      },
-      deep: true
+    remainderLimitZMax () {
+      this.getResultObj()
+    },
+    itemFirst (val) {
+      if (val === '1') {
+        this.remainderLimitZMax = null
+      }
+      this.getResultObj()
     }
   },
   methods: {
-    handleSwitchRadio (key) {
-      if (this.allItemFirst[key] === '1') {
-        this.allRemainderLimitZMax[key] = ''
+    getResultObj () {
+      if (this.type === 'totle') {
+        this.resultObj = hope.getEveryPossible(this.wood, this.box)
+      } else {
+        this.resultObj = hope.getPlanToPutRemainder(this.boxTotle, this.wood, this.box, this.totleVal, this.totleKey, this.itemFirst, this.remainderLimitZMax)
       }
     },
-    getPlanToPutRemainder (remainder, val, key) {
-      return hope.getPlanToPutRemainder(remainder, this.allNewWood[key], this.box, val, key, this.allItemFirst[key], this.allRemainderLimitZMax[key])
-    },
-    makePlanString (val, valK, index) {
+    makePlanString (val, valK, index, key, remainderLimitZMax) {
       const valKArray = valK.split('÷')
-      return `${this.box[valKArray[1]]} × ${val.plan[index]} + ${this.wood[valKArray[0]].offset} = ${hope.countWoodResult(this.box[valKArray[1]],val.plan[index],this.wood[valKArray[0]].offset)} &lt; ${this.wood[valKArray[0]].max}<br/>`
+      let tempLimitZMax = this.wood[valKArray[0]].max
+      if (valKArray[0] === 'limitZ' && remainderLimitZMax) {
+        tempLimitZMax = remainderLimitZMax
+      console.log(key)
+      }
+      return `${this.box[valKArray[1]]} × ${val.plan[index]} + ${this.wood[valKArray[0]].offset} = ${hope.countWoodResult(this.box[valKArray[1]],val.plan[index],this.wood[valKArray[0]].offset)} &lt; ${tempLimitZMax}<br/>`
     },
     makeRemainderString (val) {
       const resultAndRemainder = hope.getResultAndRemainder(this.boxTotle, val.number)

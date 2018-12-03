@@ -15,11 +15,11 @@
     </div>
     <button class="wo-button" @click="count">{{showResult ? '重新输入' : '开始计算'}}</button>
     <HopeResultList
-      :showResult="showResult"
-      :resultObj="resultObj"
+      v-if="showResult"
       :wood="wood"
       :box="box"
       :boxTotle="boxTotle"
+      type="totle"
     />
   </div>
 </template>
@@ -65,9 +65,6 @@ export default {
   methods: {
     count () {
       this.showResult = !this.showResult
-      if (this.showResult) {
-        this.resultObj = hope.getEveryPossible(this.wood, this.box)
-      }
     },
     getResultAndRemainder (dividend, divisor) {
       return hope.getResultAndRemainder(dividend, divisor)
