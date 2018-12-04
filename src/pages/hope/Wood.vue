@@ -1,17 +1,22 @@
 <template>
   <div id="Wood" class="wood">
+    <div class="wood-container">
+      <wo-input label="货柜长度限制" type="number" :value="container.maxX" readonly/>
+      <wo-input label="货柜宽度限制" type="number" :value="container.maxY" readonly/>
+      <wo-input label="货柜高度限制" type="number" :value="container.maxZ" readonly/>
+    </div>
     <div class="wood-form" :class="{'wood-form-disabled': showResult}">
       <div class="group wood-group">
       <wo-input label="木托长度限制" type="number" v-model="wood.limitX.max"/>
       <wo-input label="木托宽度限制" type="number" v-model="wood.limitY.max"/>
       <wo-input label="木托高度限制" type="number" v-model="wood.limitZ.max"/>
-    </div>
-    <div class="group box-group">
-    <wo-input label="箱子数量boxTotle" type="number" v-model="boxTotle"/>
-    <wo-input label="箱子长度" type="number" v-model="box.valueX"/>
-    <wo-input label="箱子宽度" type="number" v-model="box.valueY"/>
-    <wo-input label="箱子高度" type="number" v-model="box.valueZ"/>
-    </div>
+      </div>
+      <div class="group box-group">
+        <wo-input label="箱子数量boxTotle" type="number" v-model="boxTotle"/>
+        <wo-input label="箱子长度" type="number" v-model="box.valueX"/>
+        <wo-input label="箱子宽度" type="number" v-model="box.valueY"/>
+        <wo-input label="箱子高度" type="number" v-model="box.valueZ"/>
+      </div>
     </div>
     <button class="wo-button" @click="count">{{showResult ? '重新输入' : '开始计算'}}</button>
     <HopeResultList
@@ -19,7 +24,7 @@
       :wood="wood"
       :box="box"
       :boxTotle="boxTotle"
-      type="totle"
+      :container="container"
     />
   </div>
 </template>
@@ -33,6 +38,11 @@ export default {
   data () {
     return {
       showResult: false,
+      container: {
+        maxX: 5,
+        maxY: 2.5,
+        maxZ: 2.5
+      },
       wood: {
         limitX: {
           max: 1.5,

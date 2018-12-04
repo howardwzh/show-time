@@ -104,10 +104,8 @@ export function getPlanToPutRemainder(remainder, wood, box, val, key, itemFirst 
     }
     
     return {
-        [key]: {
-            plan: [valX, valY, valZ ],
-            number: NP.times(valX, valY, valZ)
-        }
+        plan: [valX, valY, valZ ],
+        number: NP.times(valX, valY, valZ)
     }
 }
 
