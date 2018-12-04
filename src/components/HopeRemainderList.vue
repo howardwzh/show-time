@@ -5,14 +5,21 @@
       <WoInput class="input" :readonly="itemFirst === '1'" label="新高度限制" type="number" v-model="remainderLimitZMax"/>
     </div>
     <div class="remainder-list-box">
-        <span class="item" v-for="(valK, index) in totleKey.split(',')" :key="valK" v-html="makePlanString(valK, index)" />
-        <span class="totle" v-html="makeRemainderString()"></span>
+      <HopeItemsList
+        :wood="wood"
+        :box="box"
+        :boxTotle="boxTotle"
+        :itemsVal="newItemsVal"
+        :itemsKey="itemsKey"
+        type="remainder"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import WoInput from './WoInput'
+import HopeItemsList from './HopeItemsList'
 import * as hope from '../assets/utils/hope'
 const radioItems = [{
   value: '1',
@@ -28,13 +35,12 @@ export default {
     wood: Object,
     box: Object,
     boxTotle: Number,
-    type: String,
-    totleVal: Object,
-    totleKey: String
+    itemsVal: Object,
+    itemsKey: String
   },
   data () {
     return {
-      resultObj: {},
+      newItemsVal: {},
       radioItems,
       itemFirst: '1',
       remainderLimitZMax: null,
@@ -42,40 +48,26 @@ export default {
     }
   },
   components: {
-    WoInput
+    WoInput,
+    HopeItemsList
   },
   mounted () {
-    setTimeout(this.getResultObj, 200)
+    setTimeout(this.getNewItemsVal, 200)
   },
   watch: {
     remainderLimitZMax () {
-      this.getResultObj()
+      this.getNewItemsVal()
     },
     itemFirst (val) {
       if (val === '1') {
         this.remainderLimitZMax = null
       }
-      this.getResultObj()
+      this.getNewItemsVal()
     }
   },
   methods: {
-    getResultObj () {
-      this.resultObj = hope.getPlanToPutRemainder(this.boxTotle, this.wood, this.box, this.totleVal, this.totleKey, this.itemFirst, this.remainderLimitZMax)
-    },
-    makePlanString (valK, index) {
-      if (!this.resultObj.plan) return
-      const valKArray = valK.split('÷')
-      let tempLimitZMax = this.wood[valKArray[0]].max
-      if (valKArray[0] === 'limitZ' && this.remainderLimitZMax) {
-        tempLimitZMax = this.remainderLimitZMax
-      }
-      return `${this.box[valKArray[1]]} × ${this.resultObj.plan[index]} + ${this.wood[valKArray[0]].offset} = ${hope.countWoodResult(this.box[valKArray[1]],this.resultObj.plan[index],this.wood[valKArray[0]].offset)} &lt; ${tempLimitZMax}<br/>`
-    },
-    makeRemainderString () {
-      if (!this.resultObj.number) return
-      const resultAndRemainder = hope.getResultAndRemainder(this.boxTotle, this.resultObj.number)
-      let remainderString = `${this.resultObj.number} - ${this.boxTotle} = ${-1*resultAndRemainder.remainder} (Vacancy)`
-      return remainderString
+    getNewItemsVal () {
+      this.newItemsVal = hope.getPlanToPutRemainder(this.boxTotle, this.wood, this.box, this.itemsVal, this.itemsKey, this.itemFirst, this.remainderLimitZMax)
     }
   }
 }
@@ -90,28 +82,22 @@ export default {
     padding: 10px;
     border: 1px solid #e5e5e5;
     border-top: none;
-    .item {
-      color: #999;
-    }
-    .totle {
-      color: #55aacc;
-    }
   }
   
   &-remainder-box{
     &-form {
       display: flex;
-      .checkbox {
-        width: 30%;
+      .radio {
+        width: 50%;
         .wo-input-label {
-          width: 100%;
+          width: 30%;
         }
         .wo-input-area {
           width: auto;
         }
       }
       .input {
-
+        width: 50%;
       }
     }
   }

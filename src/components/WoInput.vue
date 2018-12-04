@@ -5,7 +5,7 @@
     </i>
     <span class="wo-input-label" v-if="label">{{label}}</span>
     <input class="wo-input-unit" v-if="/checkbox/.test(type)" :type="type" @change="handleChange" v-model="val" :readonly="readonly" :name="name" :placeholder="placeholder" />
-    <label v-if="/radio/.test(type)" v-for="item in radioItems" :key="item.value">
+    <label class="wo-input-radio" v-if="/radio/.test(type)" v-for="item in radioItems" :key="item.value">
       <input class="wo-input-unit" :type="type" @change="handleChange" :value="item.value" v-model="val" :readonly="readonly" :name="name" :placeholder="placeholder" />
       <span class="wo-input-label-radio">{{item.label}}</span>
     </label>
@@ -114,5 +114,8 @@ export default {
   outline: none;
   border: none;
   color: #333;
+}
+.wo-input-radio {
+  margin-right: 16px;
 }
 </style>
