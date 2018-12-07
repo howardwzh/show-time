@@ -22,6 +22,10 @@
       <li><a href="#/chart">ChartJS</a></li>
       <li><a href="https://howardwzh.gitlab.io/page-painter">Skrollr</a></li>
     </ul>
+    <h3>Hope's Tools</h3>
+    <ul>
+      <li><a href="#/hope">Wood</a></li>
+    </ul>
   </div>
 </template>
 
