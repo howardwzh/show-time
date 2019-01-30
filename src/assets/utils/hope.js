@@ -118,3 +118,34 @@ export function getPlanToPutRemainder(remainder, wood, box, val, key, itemFirst 
 export function countWoodResult (boxParams, boxNumber, offset) {
     return NP.round(NP.plus(NP.times(boxParams, boxNumber), offset), 3)
 }
+
+/**
+ * 
+ */
+export function countPrices () {
+    
+}
+
+/**
+ * 
+ * @param {*} file 
+ */
+export function getBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}
+
+/**
+ * 获取mimeType
+ * @param  {String} type the old mime-type
+ * @return the new mime-type
+ */
+export function _fixType (type) {
+    type = type.toLowerCase().replace(/jpg/i, 'jpeg');
+    var r = type.match(/png|jpeg|bmp|gif/)[0];
+    return 'image/' + r;
+}

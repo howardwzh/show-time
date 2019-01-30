@@ -11,6 +11,7 @@
   "dependencies": {
     "babel-runtime": "^6.26.0",
     "chart.js": "^2.7.2",
+    "html2canvas": "^1.0.0-alpha.12",
     "js-beautify": "^1.7.5",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
