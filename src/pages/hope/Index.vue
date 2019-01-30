@@ -20,7 +20,7 @@ export default {
   name: 'Hope',
   data () {
     return {
-      currentTool: 'prices'
+      currentTool: 'SplicePicture'
     }
   },
   components: {

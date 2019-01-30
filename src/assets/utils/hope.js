@@ -130,22 +130,26 @@ export function countPrices () {
  * 
  * @param {*} file 
  */
-export function getBase64(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
+export function getBase64(files) {
+    return new Promise((resolve) => {
+        filesReader(files, resultArray => {
+            resolve(resultArray)
+        })
     });
 }
 
-/**
- * 获取mimeType
- * @param  {String} type the old mime-type
- * @return the new mime-type
- */
-export function _fixType (type) {
-    type = type.toLowerCase().replace(/jpg/i, 'jpeg');
-    var r = type.match(/png|jpeg|bmp|gif/)[0];
-    return 'image/' + r;
+function filesReader (files, callback, index, reader, resultArray) {
+    index = index || 0
+    resultArray = resultArray || []
+    if (index === files.length) {
+        callback(resultArray)
+        return
+    }
+    reader = reader || new FileReader()
+    reader.readAsDataURL(files[index++]);
+    reader.onload = () => {
+        resultArray.push(reader.result)
+        filesReader(files, callback, index, reader, resultArray)
+    }
+    reader.onerror = () => {alert('图片读取失败')};
 }
