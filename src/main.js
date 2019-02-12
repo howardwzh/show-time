@@ -14,10 +14,14 @@ import WEBP from './pages/webp/Index.vue'
 import Chart from './pages/chart/Index.vue'
 import Skrollr from './pages/skrollr/Index.vue'
 import Hope from './pages/hope/Index.vue'
+import Rebirth from './pages/rebirth/Index.vue'
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 
 Vue.config.productionTip = false
 
 Vue.use(VueRouter)
+Vue.use(ElementUI)
 
 Vue.component('WzhMarkdown', WzhMarkdown)
 Vue.component('Wrapper', Wrapper)
@@ -33,6 +37,7 @@ const router = new VueRouter({
     { path: '/chart', component: Chart, meta: { title: 'ChartJS展示' } },
     { path: '/skrollr', component: Skrollr, meta: { title: 'Skrollr展示' } },
     { path: '/hope', component: Hope, meta: { title: 'Hope' } },
+    { path: '/rebirth', component: Rebirth, meta: { title: '每天进步一点点'} },
     { path: '*', component: NotFound }
   ]
 })
