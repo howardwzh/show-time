@@ -27,49 +27,57 @@ const tableData = [{
   'amount':'750 + 逾期费150',
   'repaid':'750 (用)',
   'remainAmount':'0',
-  'status':'结清（私发客服）'
+  'status':'结清（私发客服）',
+  '60000remain':'',
 },{
   'p2pName': '贷上钱',
   'amount':'2686',
   'repaid':'2686 (用)',
   'remainAmount':'0',
-  'status':'结清'
+  'status':'结清',
+  '60000remain':'',
 },{
   'p2pName': '我是校花',
   'amount':'2489',
   'repaid':'2489 (用)',
   'remainAmount':'0',
-  'status':'结清'
+  'status':'结清',
+  '60000remain':'',
 },{
   'p2pName': '平安信用卡',
   'amount':'1539',
   'repaid':'1539 (用)',
   'remainAmount':'0',
-  'status':'结清'
+  'status':'结清',
+  '60000remain':'',
 },{
   'p2pName': '捷信',
   'amount':'7500',
   'repaid':'1328.2 (用)',
   'remainAmount':'5508 (一次付清)<br/>7734 (每期1289，剩6期)',
-  'status':'共30期，已还24期，剩6期'
+  'status':'共30期，已还24期，剩6期',
+  '60000remain':'',
 },{
   'p2pName': '平安普惠',
   'amount':'11570',
   'repaid':'1157 (用)',
   'remainAmount':'10413 (每期1157，剩9期)',
-  'status':'共12期，已还3期，剩9期'
+  'status':'共12期，已还3期，剩9期',
+  '60000remain':'',
 },{
   'p2pName': '平安氧气贷',
   'amount':'6100',
   'repaid':'0',
   'remainAmount':'6100',
-  'status':'共3期，已还2期，剩1期'
+  'status':'共3期，已还2期，剩1期',
+  '60000remain':'',
 },{
   'p2pName': '车贷',
   'amount':'46000',
   'repaid':'0',
   'remainAmount':'46000',
-  'status':'共36期，已还15期，剩21期'
+  'status':'共36期，已还15期，剩21期',
+  '60000remain':'',
 },{
   'p2pName': '玖富万卡',
   'amount':'4300',
