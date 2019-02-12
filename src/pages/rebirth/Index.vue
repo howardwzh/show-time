@@ -41,29 +41,35 @@ const tableData = [{
   'remainAmount':'0',
   'status':'结清'
 },{
+  'p2pName': '平安信用卡',
+  'amount':'1539',
+  'repaid':'1539 (用)',
+  'remainAmount':'0',
+  'status':'结清'
+},{
   'p2pName': '捷信',
   'amount':'7500',
   'repaid':'1328.2 (用)',
-  'remainAmount':'5508 (一次付清)',
+  'remainAmount':'5508 (一次付清)<br/>7734 (每期1289，剩6期)',
   'status':'共30期，已还24期，剩6期'
 },{
   'p2pName': '平安普惠',
-  'amount':'10038',
+  'amount':'11570',
   'repaid':'1157 (用)',
-  'remainAmount':'5500 (一次付清)<br/>7734 (每期1289，剩6期)',
-  'status':'共<b>xx</b>期，已还<b>xx</b>期，剩6期'
+  'remainAmount':'10413 (每期1157，剩9期)',
+  'status':'共12期，已还3期，剩9期'
 },{
   'p2pName': '平安氧气贷',
   'amount':'6100',
-  'repaid':'1539 (用)',
-  'remainAmount':'4561',
-  'status':'共<b>xx</b>期，已还<b>xx</b>期，剩<b>xx</b>期'
+  'repaid':'0',
+  'remainAmount':'6100',
+  'status':'共3期，已还2期，剩1期'
 },{
   'p2pName': '车贷',
   'amount':'46000',
   'repaid':'0',
   'remainAmount':'46000',
-  'status':'共40期，已还16期，剩24期'
+  'status':'共36期，已还15期，剩21期'
 },{
   'p2pName': '玖富万卡',
   'amount':'4300',
@@ -84,7 +90,7 @@ export default {
     MShowTableData
   },
   methods: {
-    spanMethod ({ row, column, rowIndex, columnIndex }) {
+    spanMethod ({ columnIndex }) {
       if (columnIndex === 5) {
           return {
             rowspan: 100,
