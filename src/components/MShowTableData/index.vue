@@ -8,6 +8,8 @@
         <el-table
           :data="tableData"
           :show-header="showHeader"
+          :span-method="spanMethod"
+          :show-summary="showSummary"
           border
           fit
           highlight-current-row
@@ -61,6 +63,14 @@ export default {
       default: 1
     },
     firstTable: {
+      type: Boolean,
+      default: false
+    },
+    spanMethod: {
+      type: Function,
+      default: () => {}
+    },
+    showSummary: {
       type: Boolean,
       default: false
     }
