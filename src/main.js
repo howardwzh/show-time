@@ -15,13 +15,16 @@ import Chart from './pages/chart/Index.vue'
 import Skrollr from './pages/skrollr/Index.vue'
 import Hope from './pages/hope/Index.vue'
 import Rebirth from './pages/rebirth/Index.vue'
+// import Demo from './pages/demo/Index.vue'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import Croppa from 'vue-croppa';
 
 Vue.config.productionTip = false
 
 Vue.use(VueRouter)
 Vue.use(ElementUI)
+Vue.use(Croppa);
 
 Vue.component('WzhMarkdown', WzhMarkdown)
 Vue.component('Wrapper', Wrapper)
@@ -38,6 +41,7 @@ const router = new VueRouter({
     { path: '/skrollr', component: Skrollr, meta: { title: 'Skrollr展示' } },
     { path: '/hope', component: Hope, meta: { title: 'Hope' } },
     { path: '/rebirth', component: Rebirth, meta: { title: '每天进步一点点'} },
+    // { path: '/demo', component: Demo, meta: { title: 'Demo'} },
     { path: '*', component: NotFound }
   ]
 })

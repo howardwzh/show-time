@@ -1,7 +1,7 @@
 <template>
   <div class="page" id="Rebirth">
     <h2>每天进步一点点</h2>
-    <m-show-table-data :data="tableData" :dictionary="dictionary" :hasIndex="false" :spanMethod="spanMethod"/>
+    <m-show-table-data :data="tableData" :dictionary="dictionary" :spanMethod="spanMethod"/>
   </div>
 </template>
 
@@ -14,6 +14,7 @@ const dictionary = [
   'remainAmount=剩余待还（元）',
   'status=状态',
   '60000remain=卖车60000使用情况（元）',
+  'totalRemainAmount=总计剩余待还（元）'
 ]
 const tableData = [{
   'p2pName': '微现金',
@@ -21,7 +22,8 @@ const tableData = [{
   'repaid':'1006.3 (用)',
   'remainAmount':'0',
   'status':'结清',
-  '60000remain':'已用：10955.5<br/>剩余：49044.5',
+  '60000remain':'已用: 60000<br/>剩余：0',
+  'totalRemainAmount': '<b style="text-align:left">捷信: 1289 x 5 = 6445<br/>平安普惠: 1157 x 8 = 9256<br/>玖富万卡: 487 x 10 = 4870<br/><br/>总计: 20571<br/><br/><br/>每月还最大金额（前5月）: <br/> 1289 + 1157 + 487 = 2933</b>'
 },{
   'p2pName': '钱包借',
   'amount':'750 + 逾期费150',
@@ -29,6 +31,7 @@ const tableData = [{
   'remainAmount':'0',
   'status':'结清（私发客服）',
   '60000remain':'',
+  'totalRemainAmount': ''
 },{
   'p2pName': '贷上钱',
   'amount':'2686',
@@ -36,6 +39,7 @@ const tableData = [{
   'remainAmount':'0',
   'status':'结清',
   '60000remain':'',
+  'totalRemainAmount': ''
 },{
   'p2pName': '我是校花',
   'amount':'2489',
@@ -43,6 +47,7 @@ const tableData = [{
   'remainAmount':'0',
   'status':'结清',
   '60000remain':'',
+  'totalRemainAmount': ''
 },{
   'p2pName': '平安信用卡',
   'amount':'1539',
@@ -50,41 +55,47 @@ const tableData = [{
   'remainAmount':'0',
   'status':'结清',
   '60000remain':'',
+  'totalRemainAmount': ''
 },{
-  'p2pName': '捷信',
-  'amount':'7500',
-  'repaid':'1328.2 (用)',
-  'remainAmount':'5508 (一次付清)<br/>7734 (每期1289，剩6期)',
-  'status':'共30期，已还24期，剩6期',
+  'p2pName': '车贷',
+  'amount':'43100',
+  'repaid':'43100 (用)',
+  'remainAmount':'0',
+  'status':'结清',
   '60000remain':'',
-},{
-  'p2pName': '平安普惠',
-  'amount':'11570',
-  'repaid':'1157 (用)',
-  'remainAmount':'10413 (每期1157，剩9期)',
-  'status':'共12期，已还3期，剩9期',
-  '60000remain':'',
+  'totalRemainAmount': ''
 },{
   'p2pName': '平安氧气贷',
   'amount':'6100',
-  'repaid':'0',
-  'remainAmount':'6100',
-  'status':'共3期，已还2期，剩1期',
+  'repaid':'5944 (用) + 156 <b>(自付)</b>',
+  'remainAmount':'0',
+  'status':'结清',
   '60000remain':'',
+  'totalRemainAmount': ''
 },{
-  'p2pName': '车贷',
-  'amount':'46000',
-  'repaid':'0',
-  'remainAmount':'46000',
-  'status':'共36期，已还15期，剩21期',
+  'p2pName': '捷信',
+  'amount':'7500',
+  'repaid':'1328.2 (用)<br/>1298 (借)',
+  'remainAmount':'<b>6445 (每期1289，剩5期)</b><br/>还款日：每月28号',
+  'status':'共30期，已还25期，剩5期',
   '60000remain':'',
+  'totalRemainAmount': ''
+},{
+  'p2pName': '平安普惠',
+  'amount':'11570',
+  'repaid':'1157 (用)<br/>1117 (借)',
+  'remainAmount':'<b>9256 (每期1157，剩8期)</b><br/>还款日：每月12号',
+  'status':'共12期，已还4期，剩8期',
+  '60000remain':'',
+  'totalRemainAmount': ''
 },{
   'p2pName': '玖富万卡',
   'amount':'4300',
-  'repaid':'487',
-  'remainAmount':'5357 (每期487，剩11期)',
-  'status':'共12期，已还1期，剩11期',
+  'repaid':'487(借)<br/>487(借)',
+  'remainAmount':'<b>4870 (每期487，剩10期)</b><br/>还款日：每月22号',
+  'status':'共12期，已还2期，剩10期',
   '60000remain':'',
+  'totalRemainAmount': ''
 }]
 export default {
   name: 'Rebirth',
@@ -99,12 +110,12 @@ export default {
   },
   methods: {
     spanMethod ({ columnIndex }) {
-      if (columnIndex === 5) {
-          return {
-            rowspan: 100,
-            colspan: 1
-          };
-        }
+      if (columnIndex === 6 || columnIndex === 7) {
+        return {
+          rowspan: 11,
+          colspan: 1
+        };
+      }
     }
   }
 }
