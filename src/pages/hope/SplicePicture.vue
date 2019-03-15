@@ -4,7 +4,7 @@
       <div id="SplicePictureBox" class="splice-picture-box">
         <h3 class="splice-picture-box-title">{{title}}</h3>
         <div class="splice-picture-box-imgs">
-            <div class="img-box" v-for="(p, index) in pictures" :key="index" :width="myOptions[`${index}width`]" :height="myOptions[`${index}height`]">
+            <div class="img-box" v-for="(p, index) in pictures" :key="p.slice(-20, -10)" :width="myOptions[`${index}width`]" :height="myOptions[`${index}height`]">
               <img v-if="!myOptions[`${index}editable`]" @dblclick="toggleEdit(index, $event)" class="img" :src="myOptions[`${index}src`] || p" />
               <croppa
                 v-show="myOptions[`${index}editable`]"
@@ -24,6 +24,7 @@
                 <el-button size="small" @click="edit(index, 'zoomIn')">放大</el-button>
                 <el-button size="small" @click="edit(index, 'zoomOut')">缩小</el-button>
                 <el-button size="small" @click="edit(index, 'copySize')">复制尺寸</el-button>
+                <el-button type="danger" size="small" @click="edit(index, 'delete')">删除</el-button>
               </div>
             </div>
         </div>
@@ -65,7 +66,6 @@ export default {
       title: '标题信息',
       pictures: [],
       imageData: '',
-      showPanel: {},
       myCroppas: {},
       myOptions: {},
       sizeGroup: [],
@@ -130,6 +130,13 @@ export default {
       } else if (type === 'copySize') {
         this.dialogVisible = true
         this.resizeIndex = index
+      } else if (type === 'delete') {
+        this.pictures.splice(index, 1)
+        delete this.myOptions[`${index}editable`]
+        setTimeout(() => {
+          this.exportPicture()
+          this.getSize()
+        }, 200)
       }
     },
     getSize() {
