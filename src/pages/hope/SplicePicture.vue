@@ -4,7 +4,7 @@
       <div id="SplicePictureBox" class="splice-picture-box">
         <h3 class="splice-picture-box-title">{{title}}</h3>
         <div class="splice-picture-box-imgs">
-            <div class="img-box" v-for="(p, index) in pictures" :key="index">
+            <div class="img-box" v-for="(p, index) in pictures" :key="index" :width="myOptions[`${index}width`]" :height="myOptions[`${index}height`]">
               <img v-if="!myOptions[`${index}editable`]" @dblclick="toggleEdit(index, $event)" class="img" :src="myOptions[`${index}src`] || p" />
               <croppa
                 v-show="myOptions[`${index}editable`]"
@@ -21,6 +21,9 @@
                 <el-button size="small" @click="edit(index, 'rotate')">旋转90度</el-button>
                 <el-button size="small" @click="edit(index, 'flipX')">左右反转</el-button>
                 <el-button size="small" @click="edit(index, 'flipY')">上下反转</el-button>
+                <el-button size="small" @click="edit(index, 'zoomIn')">放大</el-button>
+                <el-button size="small" @click="edit(index, 'zoomOut')">缩小</el-button>
+                <el-button size="small" @click="edit(index, 'copySize')">复制尺寸</el-button>
               </div>
             </div>
         </div>
@@ -31,12 +34,29 @@
     <label>增加图片<input type="file" @change="uploadPicture" multiple="multiple"/></label>
     <p class="edit-tip">双击某图片可切换：编辑功能 / 保存编辑完成图片 </p><br/>
     <a :href="imageData" download="拼接图片.jpeg" id="exportLink" class="splice-picture-button"><el-button type="primary">导出拼接图片</el-button></a>
+    <el-dialog
+      :visible.sync="dialogVisible"
+      title="请选择使用的图片尺寸"
+      width="30%">
+      <el-row>
+        <el-tag class="size-tag" v-for="(size, index) in sizeGroup" :key="index" :type="sizeIndex === index ? 'success' : ''" @click="sizeIndex = index">
+          {{`${size.width} x ${size.height}`}}
+        </el-tag>
+      </el-row>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="resize">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import * as hope from '../../assets/utils/hope'
 import html2canvas from 'html2canvas';
+import _forEach from 'lodash/forEach'
+import _uniqWith from 'lodash/uniqWith'
+import _isEqual from 'lodash/isEqual'
 
 export default {
   name: 'SplicePicture',
@@ -44,11 +64,14 @@ export default {
     return {
       title: '标题信息',
       pictures: [],
-      editPictures: [],
       imageData: '',
       showPanel: {},
       myCroppas: {},
-      myOptions: {}
+      myOptions: {},
+      sizeGroup: [],
+      sizeIndex: -1,
+      resizeIndex: -1,
+      dialogVisible: false
     }
   },
   components: {
@@ -69,7 +92,10 @@ export default {
       }
       hope.getBase64(files).then(filesBase64 => {
         this.pictures = this.pictures.concat(filesBase64)
-        setTimeout(self.exportPicture, 200)
+        setTimeout(() => {
+          self.exportPicture()
+          self.getSize()
+        }, 200)
       })
     },
     exportPicture () {
@@ -97,7 +123,30 @@ export default {
         myCroppa.flipX()
       } else if (type === 'flipY') {
         myCroppa.flipY()
+      } else if (type === 'zoomIn') {
+        myCroppa.zoomIn()
+      } else if (type === 'zoomOut') {
+        myCroppa.zoomOut()
+      } else if (type === 'copySize') {
+        this.dialogVisible = true
+        this.resizeIndex = index
       }
+    },
+    getSize() {
+      const sizeGroup = []
+      const imgs = document.getElementsByClassName('img')
+      _forEach(imgs, img => {
+        sizeGroup.push({
+          width: img.offsetWidth,
+          height: img.offsetHeight
+        })
+      })
+      this.sizeGroup = _uniqWith(sizeGroup, _isEqual)
+    },
+    resize() {
+      this.myOptions[`${this.resizeIndex}width`] = this.sizeGroup[this.sizeIndex].width
+      this.myOptions[`${this.resizeIndex}height`] = this.sizeGroup[this.sizeIndex].height
+      this.dialogVisible = false
     }
   }
 }
@@ -152,6 +201,9 @@ export default {
     font-size: 12px;
     color: #409eff;
     margin: 0;
+  }
+  .size-tag {
+    margin: 6px 3px;
   }
 }
 </style>
