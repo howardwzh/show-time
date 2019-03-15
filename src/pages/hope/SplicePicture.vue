@@ -44,11 +44,11 @@ export default {
     return {
       title: '标题信息',
       pictures: [],
+      editPictures: [],
       imageData: '',
       showPanel: {},
       myCroppas: {},
-      myOptions: {},
-      initialImageUrl: '',
+      myOptions: {}
     }
   },
   components: {
@@ -69,7 +69,6 @@ export default {
       }
       hope.getBase64(files).then(filesBase64 => {
         this.pictures = this.pictures.concat(filesBase64)
-        this.initialImageUrl = filesBase64
         setTimeout(self.exportPicture, 200)
       })
     },
@@ -86,6 +85,7 @@ export default {
       }
       if (this.myOptions[`${index}editable`]) {
         this.myOptions[`${index}src`] = this.myCroppas[index].generateDataUrl()
+        setTimeout(this.exportPicture, 200)
       }
       this.$set(this.myOptions, `${index}editable`, !this.myOptions[`${index}editable`])
     },
