@@ -110,7 +110,7 @@ export default {
     },
     exportPicture () {
       const self = this
-      html2canvas(document.querySelector("#SplicePictureBox")).then(function(canvas) {
+      html2canvas(document.querySelector("#SplicePictureBox"), {scale: 2}).then(function(canvas) {
         self.imageData = canvas.toDataURL('image/jpeg', 0.6);
       });
     },
