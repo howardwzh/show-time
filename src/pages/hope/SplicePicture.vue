@@ -4,37 +4,48 @@
       <div id="SplicePictureBox" class="splice-picture-box">
         <h3 class="splice-picture-box-title">{{title}}</h3>
         <div class="splice-picture-box-imgs">
-            <div class="img-box" v-for="(p, index) in pictures" :key="p.slice(-20, -10)" :width="myOptions[`${index}width`]" :height="myOptions[`${index}height`]">
-              <img v-if="!myOptions[`${index}editable`]" @dblclick="toggleEdit(index, $event)" class="img" :src="myOptions[`${index}src`] || p" />
+            <div class="img-box" v-for="(p, index) in pictures" :key="p.id">
+              <img v-if="!myOptions[`${p.id}editable`]" @dblclick="toggleEdit(p.id, $event)" class="img" :src="myOptions[`${p.id}src`] || p.src" />
               <croppa
-                v-show="myOptions[`${index}editable`]"
-                v-if="myOptions[`${index}width`]"
-                @dblclick="toggleEdit(index)"
-                v-model="myCroppas[index]"
+                v-show="myOptions[`${p.id}editable`]"
+                v-if="myOptions[`${p.id}width`]"
+                @dblclick="toggleEdit(p.id)"
+                v-model="myCroppas[p.id]"
                 :show-remove-button="false"
-                :width="myOptions[`${index}width`]"
-                :height="myOptions[`${index}height`]"
+                :width="myOptions[`${p.id}width`]"
+                :height="myOptions[`${p.id}height`]"
                 >
-                <img slot="initial" :src="p" />
+                <img slot="initial" :src="p.src" />
               </croppa>
-              <div v-if="myOptions[`${index}editable`]" class="edit-box">
-                <el-button size="small" @click="edit(index, 'rotate')">旋转90度</el-button>
-                <el-button size="small" @click="edit(index, 'flipX')">左右反转</el-button>
-                <el-button size="small" @click="edit(index, 'flipY')">上下反转</el-button>
-                <el-button size="small" @click="edit(index, 'zoomIn')">放大</el-button>
-                <el-button size="small" @click="edit(index, 'zoomOut')">缩小</el-button>
-                <el-button size="small" @click="edit(index, 'copySize')">复制尺寸</el-button>
-                <el-button type="danger" size="small" @click="edit(index, 'delete')">删除</el-button>
+              <div v-if="myOptions[`${p.id}editable`]" class="edit-box">
+                <el-button size="small" @click="edit(p.id, 'rotate')">旋转90度</el-button>
+                <el-button size="small" @click="edit(p.id, 'flipX')">左右反转</el-button>
+                <el-button size="small" @click="edit(p.id, 'flipY')">上下反转</el-button>
+                <el-button size="small" @click="edit(p.id, 'zoomIn')">放大</el-button>
+                <el-button size="small" @click="edit(p.id, 'zoomOut')">缩小</el-button>
+                <el-button size="small" @click="edit(p.id, 'copySize')">修改尺寸</el-button>
+                <el-button type="danger" size="small" @click="edit(p.id, 'delete', index)">删除</el-button>
               </div>
             </div>
         </div>
       </div>
     </div>
     <br/>
-    <label>输入标题<input type="text" v-model="title"/></label><br/><br/>
-    <label>增加图片<input type="file" @change="uploadPicture" multiple="multiple"/></label>
-    <p class="edit-tip">双击某图片可切换：编辑功能 / 保存编辑完成图片 </p><br/>
-    <a :href="imageData" download="拼接图片.jpeg" id="exportLink" class="splice-picture-button"><el-button type="primary">导出拼接图片</el-button></a>
+    <el-form class="form" label-width="80px">
+      <el-form-item label="输入标题">
+        <el-input v-model="title"></el-input>
+      </el-form-item>
+      <el-form-item label="增加图片">
+        <el-button type="primary" class="upload-btn">
+          <input type="file" @change="uploadPicture" multiple="multiple"/>
+          上传图片
+        </el-button>
+        <p class="edit-tip">双击某图片可切换：编辑功能 / 保存编辑完成图片 </p>
+      </el-form-item>
+      <el-form-item>
+        <a :href="imageData" download="拼接图片.jpeg" id="exportLink" class="splice-picture-button"><el-button type="success">导出拼接图片</el-button></a>
+      </el-form-item>
+    </el-form>
     <el-dialog
       :visible.sync="dialogVisible"
       title="请选择使用的图片尺寸"
@@ -70,7 +81,7 @@ export default {
       myOptions: {},
       sizeGroup: [],
       sizeIndex: -1,
-      resizeIndex: -1,
+      resizeId: '',
       dialogVisible: false
     }
   },
@@ -82,41 +93,40 @@ export default {
     }
   },
   methods: {
-    uploadPicture (e, file) {
-      const self = this
-      let files
-      if (file) {
-        files = [file]
-      } else {
-        files = e.target.files
-      }
+    uploadPicture (e) {
+      const files = e.target.files
       hope.getBase64(files).then(filesBase64 => {
-        this.pictures = this.pictures.concat(filesBase64)
+        _forEach(filesBase64, src => {
+          this.pictures.push({
+            id: hope.guid(),
+            src
+          })
+        })
         setTimeout(() => {
-          self.exportPicture()
-          self.getSize()
+          this.exportPicture()
+          this.getSize()
         }, 200)
       })
     },
     exportPicture () {
       const self = this
       html2canvas(document.querySelector("#SplicePictureBox")).then(function(canvas) {
-        self.imageData = canvas.toDataURL('image/jpeg', 0.2);
+        self.imageData = canvas.toDataURL('image/jpeg', 0.6);
       });
     },
-    toggleEdit(index, e) {
-      if (!this.myOptions[`${index}width`]) {
-        this.$set(this.myOptions, `${index}width`, e.target.width)
-        this.$set(this.myOptions, `${index}height`, e.target.height)
+    toggleEdit(id, e) {
+      if (!this.myOptions[`${id}width`]) {
+        this.$set(this.myOptions, `${id}width`, e.target.width)
+        this.$set(this.myOptions, `${id}height`, e.target.height)
       }
-      if (this.myOptions[`${index}editable`]) {
-        this.myOptions[`${index}src`] = this.myCroppas[index].generateDataUrl()
+      if (this.myOptions[`${id}editable`]) {
+        this.myOptions[`${id}src`] = this.myCroppas[id].generateDataUrl('jpeg')
         setTimeout(this.exportPicture, 200)
       }
-      this.$set(this.myOptions, `${index}editable`, !this.myOptions[`${index}editable`])
+      this.$set(this.myOptions, `${id}editable`, !this.myOptions[`${id}editable`])
     },
-    edit(index, type) {
-      const myCroppa = this.myCroppas[index]
+    edit(id, type, index) {
+      const myCroppa = this.myCroppas[id]
       if (type === 'rotate') {
         myCroppa.rotate(-1)
       } else if (type === 'flipX') {
@@ -129,10 +139,10 @@ export default {
         myCroppa.zoomOut()
       } else if (type === 'copySize') {
         this.dialogVisible = true
-        this.resizeIndex = index
+        this.resizeId = id
       } else if (type === 'delete') {
         this.pictures.splice(index, 1)
-        delete this.myOptions[`${index}editable`]
+        delete this.myOptions[`${id}editable`]
         setTimeout(() => {
           this.exportPicture()
           this.getSize()
@@ -151,8 +161,8 @@ export default {
       this.sizeGroup = _uniqWith(sizeGroup, _isEqual)
     },
     resize() {
-      this.myOptions[`${this.resizeIndex}width`] = this.sizeGroup[this.sizeIndex].width
-      this.myOptions[`${this.resizeIndex}height`] = this.sizeGroup[this.sizeIndex].height
+      this.myOptions[`${this.resizeId}width`] = this.sizeGroup[this.sizeIndex].width
+      this.myOptions[`${this.resizeId}height`] = this.sizeGroup[this.sizeIndex].height
       this.dialogVisible = false
     }
   }
@@ -211,6 +221,23 @@ export default {
   }
   .size-tag {
     margin: 6px 3px;
+    cursor: pointer;
+  }
+  .form {
+    width: 500px;
+    .upload-btn {
+      position: relative;
+      input {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        z-index: 10;
+        cursor: pointer;
+      }
+    }
   }
 }
 </style>
