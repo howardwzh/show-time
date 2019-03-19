@@ -14,16 +14,18 @@
                 :show-remove-button="false"
                 :width="myOptions[`${p.id}width`]"
                 :height="myOptions[`${p.id}height`]"
+                :disable-scroll-to-zoom="true"
                 >
                 <img slot="initial" :src="p.src" />
               </croppa>
               <div v-if="myOptions[`${p.id}editable`]" class="edit-box">
-                <el-button size="small" @click="edit(p.id, 'rotate')">旋转90度</el-button>
-                <el-button size="small" @click="edit(p.id, 'flipX')">左右反转</el-button>
-                <el-button size="small" @click="edit(p.id, 'flipY')">上下反转</el-button>
-                <el-button size="small" @click="edit(p.id, 'zoomIn')">放大</el-button>
-                <el-button size="small" @click="edit(p.id, 'zoomOut')">缩小</el-button>
-                <el-button size="small" @click="edit(p.id, 'copySize')">修改尺寸</el-button>
+                <el-button size="mini" @click="edit(p.id, 'rotateLeft')">左旋90度</el-button>
+                <el-button size="mini" @click="edit(p.id, 'rotateRight')">右旋90度</el-button>
+                <!-- <el-button size="mini" @click="edit(p.id, 'flipX')">左右反转</el-button>
+                <el-button size="mini" @click="edit(p.id, 'flipY')">上下反转</el-button> -->
+                <el-button size="mini" @click="edit(p.id, 'zoomIn')">放大</el-button>
+                <el-button size="mini" @click="edit(p.id, 'zoomOut')">缩小</el-button>
+                <el-button size="mini" @click="edit(p.id, 'copySize')">修改尺寸</el-button>
                 <el-button type="danger" size="small" @click="edit(p.id, 'delete', index)">删除</el-button>
               </div>
             </div>
@@ -33,7 +35,7 @@
     <br/>
     <el-form class="form" label-width="80px">
       <el-form-item label="输入标题">
-        <el-input v-model="title"></el-input>
+        <el-input v-model="title" @blur="exportPicture"></el-input>
       </el-form-item>
       <el-form-item label="增加图片">
         <el-button type="primary" class="upload-btn">
@@ -43,7 +45,12 @@
         <p class="edit-tip">双击某图片可切换：编辑功能 / 保存编辑完成图片 </p>
       </el-form-item>
       <el-form-item>
-        <a :href="imageData" download="拼接图片.jpeg" id="exportLink" class="splice-picture-button"><el-button type="success">导出拼接图片</el-button></a>
+        <el-button v-if="isExporting">
+          <i class="el-icon-loading"></i>&nbsp;拼接图片中...
+        </el-button>
+        <a v-else :href="imageData" download="拼接图片.jpeg" id="exportLink" class="splice-picture-button">
+          <el-button type="success">导出拼接图片</el-button>
+        </a>
       </el-form-item>
     </el-form>
     <el-dialog
@@ -82,15 +89,11 @@ export default {
       sizeGroup: [],
       sizeIndex: -1,
       resizeId: '',
-      dialogVisible: false
+      dialogVisible: false,
+      isExporting: false
     }
   },
   components: {
-  },
-  watch: {
-    title () {
-      setTimeout(this.exportPicture, 200)
-    }
   },
   methods: {
     uploadPicture (e) {
@@ -110,8 +113,10 @@ export default {
     },
     exportPicture () {
       const self = this
+      self.isExporting = true
       html2canvas(document.querySelector("#SplicePictureBox"), {scale: 2}).then(function(canvas) {
-        self.imageData = canvas.toDataURL('image/jpeg', 0.6);
+        self.imageData = canvas.toDataURL('image/jpeg', 0.36);
+        self.isExporting = false
       });
     },
     toggleEdit(id, e) {
@@ -127,12 +132,14 @@ export default {
     },
     edit(id, type, index) {
       const myCroppa = this.myCroppas[id]
-      if (type === 'rotate') {
+      if (type === 'rotateLeft') {
         myCroppa.rotate(-1)
-      } else if (type === 'flipX') {
-        myCroppa.flipX()
-      } else if (type === 'flipY') {
-        myCroppa.flipY()
+      } else if (type === 'rotateRight') {
+        myCroppa.rotate(1)
+      // } else if (type === 'flipX') {
+      //   myCroppa.flipX()
+      // } else if (type === 'flipY') {
+      //   myCroppa.flipY()
       } else if (type === 'zoomIn') {
         myCroppa.zoomIn()
       } else if (type === 'zoomOut') {
@@ -173,16 +180,16 @@ export default {
 .splice-picture {
   &-panel {
     border: 3px solid #333;
-    width: 1600px;
+    width: 1200px;
   }
   &-box {
-    width: 1600px;
+    width: 1200px;
     &-title {
-      height: 100px;
-      line-height: 90px;
+      height: 80px;
+      line-height: 64px;
       margin: 0;
       text-align: center;
-      font-size: 50px;
+      font-size: 45px;
     }
     &-imgs {
       min-height: 200px;
