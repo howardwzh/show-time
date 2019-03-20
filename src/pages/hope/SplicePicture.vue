@@ -189,7 +189,7 @@ export default {
       line-height: 64px;
       margin: 0;
       text-align: center;
-      font-size: 45px;
+      font-size: 36px;
     }
     &-imgs {
       min-height: 200px;
