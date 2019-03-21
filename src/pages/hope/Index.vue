@@ -1,14 +1,11 @@
 <template>
   <div class="page" id="Hope">
-    <h2>Tools of Hope</h2>
-    <div>
-      <button @click="switchTool('prices')">Prices</button>
-      <button @click="switchTool('wood')">Wood</button>
-      <button @click="switchTool('SplicePicture')">SplicePicture</button>
-    </div>
-    <Prices v-if="currentTool === 'prices'" />
-    <Wood v-if="currentTool === 'wood'" />
-    <SplicePicture v-if="currentTool === 'SplicePicture'" />
+    <h2>Hope的工具箱</h2>
+    <el-tabs v-model="activeName">
+      <el-tab-pane label="图片拼接" name="SplicePicture"><SplicePicture /></el-tab-pane>
+      <el-tab-pane label="木托计算" name="Wood"><Wood /></el-tab-pane>
+      <el-tab-pane label="价格计算（未完成）" name="Prices"><Prices /></el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
@@ -20,7 +17,7 @@ export default {
   name: 'Hope',
   data () {
     return {
-      currentTool: 'SplicePicture'
+      activeName: 'SplicePicture'
     }
   },
   components: {
@@ -29,9 +26,6 @@ export default {
     SplicePicture
   },
   methods: {
-    switchTool (tool) {
-      this.currentTool = tool
-    }
   }
 }
 </script>

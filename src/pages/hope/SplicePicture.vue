@@ -185,11 +185,11 @@ export default {
   &-box {
     width: 1200px;
     &-title {
-      height: 80px;
-      line-height: 64px;
+      line-height: 40px;
       margin: 0;
       text-align: center;
       font-size: 36px;
+      padding: 8px 10px 21px;
     }
     &-imgs {
       min-height: 200px;
