@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build:hope": "cross-env VUE_APP_OWNER=hope vue-cli-service build",
     "lint": "vue-cli-service lint",
     "deploy": "node ghpages.js"
   },
@@ -27,6 +28,7 @@
     "@vue/cli-plugin-babel": "^3.0.1",
     "@vue/cli-plugin-eslint": "^3.0.1",
     "@vue/cli-service": "^3.0.1",
+    "cross-env": "^7.0.2",
     "css-loader": "^2.1.1",
     "gh-pages": "^1.2.0",
     "less": "^3.0.4",

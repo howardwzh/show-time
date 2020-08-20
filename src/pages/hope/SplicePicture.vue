@@ -114,7 +114,7 @@ export default {
     exportPicture () {
       const self = this
       self.isExporting = true
-      html2canvas(document.querySelector("#SplicePictureBox"), {scale: 2}).then(function(canvas) {
+      html2canvas(document.querySelector("#SplicePictureBox"), {scale: 2, scrollY: -window.scrollY}).then(function(canvas) {
         self.imageData = canvas.toDataURL('image/jpeg', 0.36);
         self.isExporting = false
       });
