@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build:hope": "cross-env VUE_APP_OWNER=hope vue-cli-service build",
+    "build:hope": "cross-env VUE_APP_OWNER=hope vue-cli-service build && gulp insert",
     "lint": "vue-cli-service lint",
     "deploy": "node ghpages.js"
   },
@@ -30,9 +30,13 @@
     "@vue/cli-service": "^3.0.1",
     "cross-env": "^7.0.2",
     "css-loader": "^2.1.1",
+    "fs": "^0.0.1-security",
     "gh-pages": "^1.2.0",
+    "gulp": "^4.0.2",
+    "gulp-replace": "^1.0.0",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
+    "require-dir": "^1.2.0",
     "vue-template-compiler": "^2.5.17"
   },
   "eslintConfig": {

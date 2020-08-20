@@ -11,6 +11,7 @@ module.exports = {
     extract: !isHopeApp
   },
   productionSourceMap: false,
+  filenameHashing: !isHopeApp,
   pages: {
     app: !isHopeApp ? {
       // entry for the page
