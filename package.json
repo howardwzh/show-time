@@ -15,7 +15,7 @@
     "element-ui": "^2.5.4",
     "html2canvas": "^1.0.0-alpha.12",
     "js-beautify": "^1.7.5",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.21",
     "mavon-editor": "^2.6.5",
     "number-precision": "^1.2.0",
     "skrollr": "^0.6.26",
